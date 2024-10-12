@@ -23,8 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public List<CategoryDTO> getCategoryList(Long dpeno) {
-        Optional<List<Category>> result = categoryRepository.findCategoriesByDepNo(dpeno);
-        List<Category> categories = result.orElseThrow();
+        List<Category> categories = categoryRepository.findCategoriesByDepNo(dpeno);
 
         log.info("getCategoryList ={}",categories);
 
@@ -36,13 +35,50 @@ public class CategoryServiceImpl implements CategoryService {
 
         for(Category category : categories){
 
-            List<CategoryDTO> categoryDTOList = getCategoryDTOS(categoryRepository.findCategoriesByDepNo(category.getId()).orElseThrow());
+            List<CategoryDTO> categoryDTOList = getCategoryDTOS(categoryRepository.findCategoriesByDepNo(category.getId()));
             CategoryDTO categoryDTO = categoryToCategoryDTO(category,categoryDTOList);
 
             categoryDTOS.add(categoryDTO);
         }
 
         log.info("categoryDTOS ={}",categoryDTOS);
+
+        return categoryDTOS;
+    }
+
+    @Override
+    public List<CategoryDTO> getCategoryDepNoList(Long depno) {
+        Optional<Category> result = categoryRepository.findById(depno);
+
+        Category category = result.orElseThrow();
+
+        List<Category> categories = categoryRepository.findCategoriesByDepNo(category.getId());
+
+        return getCategoryDTOS(categories);
+    }
+
+    @Override
+    public List<CategoryDTO> getTopCategoryList() {
+        Optional<Category> result = categoryRepository.findByCategoryName("커뮤니티");
+        Category category = result.orElseThrow();
+
+        List<Category> categories = categoryRepository.getTopCategoryList(category.getId());
+        List<CategoryDTO> categoryDTOS = getCategoryDTOS(categories);
+
+        return categoryDTOS;
+    }
+
+    @Override
+    public List<CategoryDTO> getExcludeInquryList() {
+        Optional<Category> result = categoryRepository.findByCategoryName("커뮤니티");
+
+        Category category = result.orElseThrow();
+        List<Integer> numberList = new ArrayList<>();
+        numberList.add(0);
+        numberList.add(Math.toIntExact(category.getId()));
+
+        List<Category> categories = categoryRepository.getExcludeTopCategoryAndInquiry(numberList);
+        List<CategoryDTO> categoryDTOS = getCategoryDTOS(categories);
 
         return categoryDTOS;
     }
@@ -81,9 +117,8 @@ public class CategoryServiceImpl implements CategoryService {
 
         log.info("getCategory ={}",category);
 
-        Optional<List<Category>> listResult = categoryRepository.findCategoriesByDepNo(category.getId());
+        List<Category> categoryList = categoryRepository.findCategoriesByDepNo(category.getId());
 
-        List<Category> categoryList = listResult.orElseThrow();
         log.info("getCategory ={}",categoryList);
 
         List<CategoryDTO> categories = new ArrayList<>();
