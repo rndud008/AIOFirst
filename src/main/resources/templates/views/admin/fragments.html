@@ -11,16 +11,68 @@
 <div th:fragment="productManageMent">
     productManageMent
     <div style="display: flex; justify-content: space-around">
-        <div onclick="loadFlagMents('categorySave','sub-route')">생성</div>
-        <div onclick="loadFlagMents('categorySearch','sub-route')">조희</div>
+        <div onclick="loadFlagMents('productSave','sub-route')">생성</div>
+        <div onclick="loadFlagMents('productSearch','sub-route')">조희</div>
     </div>
     <div id="sub-route"></div>
 </div>
+
 <div th:fragment="productSave">
     상품 생성
-    <form id="productSave" th:object="${ProductDTO}">
+    <form style="display: flex; flex-direction: column" id="productSave" th:object="${productDTO}"
+          enctype="multipart/form-data">
+        <label for="productName">상품 이름</label>
+        <input type="text" id="productName" th:field="*{productName}" placeholder="상품명을 입력해주세요."/>
+        <label for="productImgs">상품이미지</label>
+        <input type="file" multiple id="productImgs" th:field="*{productImgs}"/>
+        <label for="productDescriptionImgs">상품 개요</label>
+        <input type="file" multiple id="productDescriptionImgs" th:field="*{productDescriptionImgs}"/>
+        <label for="size">상품 사이즈</label>
+        <input type="text" id="size" th:field="*{size}" placeholder="ex) L, M, XL ,..."/>
+        <label for="color">상품 색상</label>
+        <input type="text" id="color" th:field="*{color}" placeholder="ex) 빨강, red, blue ,..."/>
+        <label for="stockQuantity">재고량</label>
+        <input type="number" id="stockQuantity" th:field="*{stockQuantity}" placeholder="초기 수량을 입력해 주세요."/>
+        <label for="consumerPrice">소비자가</label>
+        <input type="number" id="consumerPrice" th:field="*{consumerPrice}"/>
+        <label for="sellPrice">판매가</label>
+        <input type="number" id="sellPrice" th:field="*{sellPrice}"/>
+        <label for="category">카테고리</label>
+        <select id="category" th:field="*{categoryDTO.id}">
+            <option th:each="category: ${categoryList}"
+                    th:value="${category?.id}"
+                    th:text="${category?.categoryName}"
+            ></option>
+        </select>
+        <div>
+            <th:block th:each="productStatus : ${productStatuses}">
+                <label th:for="${productStatus}" th:text="${productStatus}">SELL</label>
+                <input type="checkbox" id="SELL" th:field="*{productStatuses}" th:value="${productStatus}">
+            </th:block>
+        </div>
+
+        <button type="button" onclick="productSave()">상품 저장</button>
 
     </form>
+</div>
+
+<div th:fragment="productSearch">
+    <div>
+        <button th:each="category: ${categoryDTOS}" type="button"
+                th:text="${category.categoryName}" th:value="${category.id}"
+                th:onclick="|loadFlagMents('productSearchAllResult','subCategory',${category.id})|"
+        ></button>
+    </div>
+
+    <div id="subCategory"></div>
+</div>
+
+<div th:fragment="productSearchAllResult">
+    <button th:each="category : ${categoryDTOS}"
+            th:text="${category.categoryName}" th:value="${category.id}"
+            th:onclick="|loadFlagMents('productSearchAllResult','subCategory',${category.depNo}, ${category.id})|"
+    ></button>
+    <div th:text="${productDTOS}"></div>
 </div>
 
 <div th:fragment="categoryManageMent">
