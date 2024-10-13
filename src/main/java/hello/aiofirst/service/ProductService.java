@@ -20,7 +20,7 @@ public interface ProductService {
     List<ProductDTO> getTopProductList(Long categoryId);
     List<ProductDTO> getSubProductList(Long categoryId);
 
-    PageResponseDTO<ProductDTO> getPageProductList(PageRequestDTO pageRequestDTO, Long categoryId);
+    PageResponseDTO<ProductDTO> getPageProductList(PageRequestDTO pageRequestDTO, Long categoryId,boolean topCategory);
 
     ProductDTO getProduct(Long id);
 
@@ -59,7 +59,7 @@ public interface ProductService {
         if (productDescriptionImgs != null || productDescriptionImgs.size() != 0) {
             List<String> fileNameList = productDescriptionImgs.stream()
                     .map(productImg -> productImg.getDescriptionFileName()).collect(Collectors.toList());
-            productDTO.setProductImgFileNames(fileNameList);
+            productDTO.setProductDescriptionImgFileNames(fileNameList);
         }
 
 

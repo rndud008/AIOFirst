@@ -34,61 +34,7 @@
         document.getElementById(route).innerHTML= response;
     }
 
-    const categoryModify = async ()=>{
 
-        const title = document.getElementById('categoryName').textContent
-
-        if(title.length <= 0) {
-            alert('제목을 입력해주세요.')
-            return;
-        }
-
-        const api = await fetch(`/category/modify`,{
-            method: 'PUT',
-            body:new URLSearchParams(new FormData(document.getElementById('categoryModify')))
-        })
-
-        api.status === 200 && alert('수정 완료')
-
-        window.location.assign('/admin')
-
-    }
-
-    const categoryRemove = async (param)=>{
-        if(!confirm("삭제 하시겠습니까?")){
-            return;
-        }
-
-        const api = await fetch(`/category/delete?id=${param}`,{
-            method: 'DELETE',
-        })
-
-        api.status === 200 && alert('삭제 완료')
-        window.location.href='/admin'
-    }
-
-    const productSave = async ()=>{
-
-        const data = new FormData(document.getElementById('productSave'))
-
-        console.log(data)
-
-        const api = await  fetch('/product/save',{
-            method:'POST',
-            body: data
-        })
-
-        api.status === 200 && alert('저장완료') ||
-        !api.status === 200 && alert('저장 실패')
-
-        window.location.href='/admin'
-    }
-
-    const categorySearchList = async (id=0) =>{
-
-        const api = await fetch('/')
-
-    }
 
 
 

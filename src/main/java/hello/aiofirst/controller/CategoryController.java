@@ -22,101 +22,88 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final ProductService productService;
 
-    @GetMapping("/")
-    @ResponseBody
-    public void home() {
-
-    }
-
     @GetMapping("/admin")
-    public String admin() {
+    public String adminMain(Model model) {
 
-        return "views/admin/index";
+        return "views/layout";
+
     }
 
-    @GetMapping("/admin/fragment/{fragmentName}")
-    public String getFragment(@PathVariable String fragmentName, Model model, @RequestParam(name = "id", required = false) Long id, @RequestParam(name = "subcategory", required = false) Long subcategory) {
+    @GetMapping("/admin/category")
+    public String adminCategory(Model model) {
 
-        switch (fragmentName) {
-            case "productManageMent":
-                break;
-            case "categoryManageMent":
-                break;
-            case "userManageMent":
-                break;
-            case "orderManageMent":
-                break;
-            case "inquiryManageMent":
-                break;
-            case "statistics":
-                break;
-            case "categorySave":
-                model.addAttribute("categoryDTO", new CategoryDTO());
-                model.addAttribute("categoryDTOS", categoryService.getCategoryList(0l));
-                break;
-            case "categoryModify":
-                model.addAttribute("categoryDTO", categoryService.getCategory(id));
-                model.addAttribute("categoryDTOS", categoryService.getCategoryList(0l));
-                break;
-            case "categorySearch":
-                model.addAttribute("categoryDTOS", categoryService.getCategoryList(0l));
-                break;
-            case "productSave":
-                model.addAttribute("productDTO", new ProductDTO());
-                model.addAttribute("productStatuses", ProductStatus.values());
-                model.addAttribute("categoryList", categoryService.getExcludeInquryList());
-                break;
-            case "productModify":
-                break;
-            case "productSearch":
-                model.addAttribute("categoryDTOS", categoryService.getTopCategoryList());
-                break;
-            case "productSearchAllResult":
+        model.addAttribute("categoryCheck", "true");
 
-                log.info("subcategory={}",subcategory);
-
-                if (subcategory != 0) {
-                    model.addAttribute("productDTOS",productService.getSubProductList(subcategory));
-                }else{
-                    model.addAttribute("productDTOS",productService.getTopProductList( id));
-                }
-                    model.addAttribute("categoryDTOS", categoryService.getCategoryDepNoList(id));
-                break;
-            default:
-
-        }
-
-        return "views/admin/fragments :: " + fragmentName;
+        return "views/layout";
     }
 
-    @PostMapping("/category/save")
+    @GetMapping("/admin/category/save")
+    public String categorySaveForm(@ModelAttribute CategoryDTO categoryDTO, Model model) {
+
+        model.addAttribute("categoryCheck", true);
+        model.addAttribute("categorySaveForm", true);
+        model.addAttribute("categoryDTO", new CategoryDTO());
+        model.addAttribute("categoryDTOS", categoryService.getCategoryList(0l));
+
+        return "views/layout";
+
+    }
+
+    @PostMapping("/admin/category/save")
     public String categorySave(@ModelAttribute CategoryDTO categoryDTO) {
         log.info("categorySave categoryDTO ={}", categoryDTO);
 
         categoryService.save(categoryDTO);
 
-        return "views/admin/index";
+        return "views/layout";
 
     }
 
-    @PutMapping("/category/modify")
+    @GetMapping("/admin/category/modify/{id}")
+    public String categoryModifyForm(@ModelAttribute CategoryDTO categoryDTO, Model model, @PathVariable("id") Long id) {
+        log.info("categoryModify categoryDTO ={}", categoryDTO);
+
+        model.addAttribute("categoryCheck", true);
+        model.addAttribute("categoryModifyForm", true);
+        model.addAttribute("categoryDTO", categoryService.getCategory(id));
+        model.addAttribute("categoryDTOS", categoryService.getCategoryList(0l));
+
+        return "views/layout";
+
+    }
+
+    @PutMapping("/admin/category/modify")
     public String categoryModify(@ModelAttribute CategoryDTO categoryDTO) {
         log.info("categoryModify categoryDTO ={}", categoryDTO);
 
         categoryService.modify(categoryDTO);
 
-        return "views/admin/index";
+        return "views/layout";
 
     }
 
-    @DeleteMapping("/category/delete")
+    @DeleteMapping("/admin/category/delete")
     public String categoryRemove(@RequestParam("id") Long id) {
         log.info("categoryRemove id = {}", id);
 
         categoryService.remove(id);
 
-        return "views/admin/index";
+        return "views/layout";
     }
+
+    @GetMapping("/admin/categories")
+    public String categoryList(Model model){
+        model.addAttribute("categoryCheck", true);
+        model.addAttribute("categorySearch", true);
+        model.addAttribute("categoryDTOS", categoryService.getCategoryList(0l));
+
+        return "views/layout";
+    }
+
+
+
+
+
 
 
 }

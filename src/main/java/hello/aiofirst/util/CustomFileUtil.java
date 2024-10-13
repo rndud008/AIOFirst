@@ -49,30 +49,37 @@ public class CustomFileUtil {
 
     public List<String> saveFiles(List<MultipartFile> files) {
 
-        if (files == null || files.size() == 0) {
-            return null;
+        if (files == null || files.isEmpty()) {
+            return new ArrayList<>();
         }
 
         List<String> uploadNames = new ArrayList<>();
 
         for (MultipartFile file : files) {
-            String savedName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 
+            String originalFilename = file.getOriginalFilename();
+            if(originalFilename == null || originalFilename.trim().isEmpty()){
+                continue;
+            }
+
+            String savedName = UUID.randomUUID().toString() + "_" + originalFilename;
             Path savePath = Paths.get(uploadPath, savedName);
 
             try {
                 Files.copy(file.getInputStream(), savePath);
 
                 String contentType = file.getContentType();
-                if (contentType != null || contentType.startsWith("image")) {
+                if (contentType != null && contentType.startsWith("image")) {
 
                     Path thumbnailPath = Paths.get(uploadPath, "s_" + savedName);
 
                     Thumbnails.of(savePath.toFile()).size(200, 200).toFile(thumbnailPath.toFile());
 
+                    uploadNames.add(savedName);
+                }else {
+                    log.info("이미지 파일이 아닙니다={}",originalFilename);
                 }
 
-                uploadNames.add(savedName);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

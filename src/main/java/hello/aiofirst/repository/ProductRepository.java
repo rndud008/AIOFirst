@@ -19,20 +19,34 @@ public interface ProductRepository extends JpaRepository<Product, Long>  {
     Optional<Product> getProduct(@Param("id") Long id);
 
     @Query("select p from Product p " +
-            "left join p.productImgs pi " +
-            "left join p.productAlphas pa " +
-            "left join p.category pc " +
-            "left join p.productDescriptionImgs pdi where pc.depNo= :categoryId and :status MEMBER OF p.productStatuses" )
-    Page<Object[]> selectList(Pageable pageable, @Param("status")ProductStatus productStatus, @Param("categoryId") Long categoryId);
+            "left join  p.productImgs pi " +
+            "left join  p.productAlphas pa " +
+            "left join  p.category pc " +
+            "left join  p.productDescriptionImgs pdi where pc.depNo= :categoryId" )
+    Page<Product> selectList(Pageable pageable, @Param("categoryId") Long categoryId);
 
-    @Query("select p,pi,pa,pdi,c from Product p " +
+    @Query("select p from Product p " +
+            "left join  p.productImgs pi " +
+            "left join  p.productAlphas pa " +
+            "left join  p.category pc " +
+            "left join  p.productDescriptionImgs pdi where pc.id= :categoryId" )
+    Page<Product> selectSubList(Pageable pageable, @Param("categoryId") Long categoryId);
+
+//    @Query("select p from Product p " +
+//            "left join  p.productImgs pi " +
+//            "left join  p.productAlphas pa " +
+//            "left join  p.category pc " +
+//            "left join  p.productDescriptionImgs pdi where pc.depNo= :categoryId and :status MEMBER OF p.productStatuses" )
+//    Page<Product> selectList(Pageable pageable, @Param("status")ProductStatus productStatus, @Param("categoryId") Long categoryId);
+
+    @Query("select p  from Product p " +
             "left join p.productImgs pi " +
             "left join p.productAlphas pa " +
             "left join p.productDescriptionImgs pdi " +
             "left join p.category c where c.depNo = :id")
     List<Product> getTopProductList(@Param("id") Long id);
 
-    @Query("select p,pi,pa,pdi,c from Product p " +
+    @Query("select p from Product p " +
             "left join p.productImgs pi " +
             "left join p.productAlphas pa " +
             "left join p.productDescriptionImgs pdi " +

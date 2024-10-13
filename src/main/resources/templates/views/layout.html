@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>메인페이지</title>
+</head>
+<body>
+<div style="display: flex; margin: 0 auto; outline: auto; width: 1000px; min-height: 600px">
+    <div style="width: 200px; height: 500px; outline: 1px solid blue">
+        <div onclick="categoryManage()">카테고리관리</div>
+        <div onclick="productManage()">상품관리</div>
+        <div onclick="loadFlagMents('userManageMent','route')">회원관리</div>
+        <div onclick="loadFlagMents('orderManageMent','route')">주문관리</div>
+        <div onclick="loadFlagMents('inquiryManageMent','route')">문의내역</div>
+        <div onclick="loadFlagMents('statistics','route')">통   계</div>
+    </div>
+    <div style="width: 100%; height: 500px; outline: 1px solid red">
+
+        <div th:if="${categoryCheck}" th:fragment="categoryTopContent">
+            <div th:replace="views/fragments/category :: categoryManagement"></div>
+        </div>
+        <div th:if="${categorySaveForm}" th:fragment="categoryMiddleContent">
+            <div th:replace="views/fragments/category :: categorySaveForm"></div>
+        </div>
+        <div th:if="${categoryModifyForm}" th:fragment="categoryMiddleContent">
+            <div th:replace="views/fragments/category :: categoryModifyForm"></div>
+        </div>
+        <div th:if="${categorySearch}" th:fragment="categoryMiddleContent">
+            <div th:replace="views/fragments/category :: categorySearch"></div>
+        </div>
+
+        <div th:if="${productCheck}" th:fragment="productTopContent">
+            <div th:replace="views/fragments/product :: productManagement"></div>
+        </div>
+        <div th:if="${productSaveForm}" th:fragment="productMiddleContent">
+            <div th:replace="views/fragments/product :: productSaveForm"></div>
+        </div>
+       <div th:if="${productSearch}" th:fragment="productMiddleContent">
+            <div th:replace="views/fragments/product :: productSearch"></div>
+        </div>
+        <div th:if="${productModifyForm}" th:fragment="productMiddleContent">
+            <div th:replace="views/fragments/product :: productModifyForm"></div>
+        </div>
+        <div th:if="${productSearchAllResult}" th:fragment="productBottomContent">
+            <div th:replace="views/fragments/product :: productSearchAllResult"></div>
+        </div>
+
+
+    </div>
+
+</div>
+</body>
+
+<script src="/js/category.js"></script>
+
+<script>
+    const productManage = async () =>{
+        const api = await fetch(`/admin/product`,{
+            method: 'GET'
+        })
+
+        window.location.href ='/admin/product'
+    }
+
+    const productValidation = () =>{
+
+    }
+
+    const productSaveForm = async () =>{
+        const api = await fetch(`/admin/product/save`,{
+            method:'GET'
+        })
+
+        window.location.href ='/admin/product/save'
+    }
+
+    const productSave = async ()=>{
+
+        const button = document.getElementById('saveButton');
+        button.disabled = true;
+
+        const data = new FormData(document.getElementById('productSave'))
+
+        console.log(data)
+
+        const api = await  fetch('/admin/product/save',{
+            method:'POST',
+            body: data
+        })
+
+        if(api.status === 200){
+            alert('저장완료')
+            window.location.href='/admin/product'
+        }else {
+            alert('저장 실패')
+        }
+
+        button.disabled = false;
+
+    }
+
+    const productSearch = async () =>{
+        const api = await fetch(`/admin/product/menu`,{
+            method:'GET'
+        })
+
+        window.location.href = '/admin/product/menu'
+
+    }
+
+    const getQueryParmas = ()=>{
+        const params = new URLSearchParams(window.location.search);
+        const page = params.get('page') ? parseInt(params.get('page')) : 1;
+        console.log(page)
+        const size = params.get('size') ? parseInt(params.get('size')) : 10;
+        console.log(size)
+
+        return {page, size}
+    }
+
+    const productSearchList = async (categoryId, subcategory=0, currentPage = 0) =>{
+
+        if (categoryId === null){
+            const currentUrl = window.location.href;
+            const start = currentUrl.lastIndexOf("/",currentUrl.indexOf('?'))+1;
+            const last = currentUrl.indexOf('?')
+            categoryId = parseInt(currentUrl.substring(start,last));
+            const params = new URLSearchParams(window.location.search);
+            subcategory = params.get('subcategory') ? parseInt(params.get('subcategory')) : 0;
+        }
+
+        const {page, size} = await getQueryParmas();
+
+        const queryParams = new URLSearchParams({
+            page: currentPage === 0 ? page : parseInt(currentPage) ,
+            size:size,
+            subcategory:subcategory
+        });
+
+        const url =`/admin/product/menu/${categoryId}?${queryParams.toString()}`;
+
+        console.log(url)
+
+        const api = await fetch(url,{
+            method: "GET",
+            headers:{
+                'Content-Type':'application/json'
+            }
+        })
+
+            window.location.href = `${url}`
+
+    }
+
+    const productModifyForm = async (id) => {
+
+        const api = await fetch(`/admin/product/modify/${id}`, {
+            method:"GET"
+        })
+
+        window.location.href = `/admin/product/modify/${id}`
+    }
+
+    const productModify = async (id) =>{
+
+        const button = document.getElementById('productModify');
+        button.disabled = true;
+
+        const data = new FormData(document.getElementById('productModify'))
+
+        const api = await fetch(`/admin/product/modify/${id}`,{
+            method:"POST",
+            body:data
+        })
+
+        if(api.status === 200){
+            alert('수정 완료')
+            window.location.href='/admin/product'
+        }else {
+            alert('수정 실패')
+        }
+
+        button.disabled = false;
+
+
+
+
+    }
+
+</script>
+
+</html>

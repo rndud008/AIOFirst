@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<div th:fragment="categoryManagement">
+    categoryManageMent
+    <div style="display: flex; justify-content: space-around">
+        <div onclick="categorySaveForm()">생성</div>
+        <div onclick="categoryList()">조희</div>
+    </div>
+</div>
+
+<div th:fragment="categorySaveForm">
+    카테고리 생성
+    <form id="categorySave" th:object="${categoryDTO}" method="post">
+        <label for="categoryName">카테고리 이름</label>
+        <input type="text" id="categoryName" th:field="*{categoryName}"/>
+        <label for="depNo">상위카테고리</label>
+        <select id="depNo" th:field="*{depNo}">
+            <option value="0" th:text="상위카테고리설정"></option>
+            <option th:each="category : ${categoryDTOS}"
+                    th:value="${category.id}"
+                    th:text="${category.categoryName}"></option>
+        </select>
+        <button id="saveButton" type="button" onclick="categorySave()">저장</button>
+    </form>
+</div>
+
+<div th:fragment="categorySearch">
+    카테고리 조회
+    <div style="display: flex" th:each="category : ${categoryDTOS}">
+        <div style="display: flex">
+            <div th:text="${category.categoryName}">대분류</div>
+            <button th:onclick="|categoryModifyForm(${category.id})|">수정</button>
+            <button th:onclick="|categoryRemove(${category.id})|">삭제</button>
+        </div>
+        <div style="display: flex; flex-direction: column" th:each="subCategory : ${category.subCategories}">
+            <div th:text="${subCategory.categoryName}">중분류</div>
+            <button th:onclick="|categoryModifyForm(${subCategory.id})|">수정</button>
+            <button th:onclick="|categoryRemove(${subCategory.id})|">삭제</button>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="categoryModifyForm">
+    카테고리 수정
+    <form id='categoryModify' th:object="${categoryDTO}">
+        <input type="hidden" th:field="*{id}">
+        <label for="categoryName">카테고리 이름</label>
+        <input type="text" id="categoryName" th:field="*{categoryName}"/>
+        <label for="depNo">상위카테고리</label>
+        <select id="depNo" th:field="*{depNo}">
+            <option value="0" th:text="상위카테고리설정"></option>
+            <option th:each="category : ${categoryDTOS}"
+                    th:value="${category.id}"
+                    th:text="${category.categoryName}"></option>
+        </select>
+        <button id="modifyButton" type="button" onclick="categoryModify()">수정</button>
+    </form>
+</div>
+
+</body>
+</html>

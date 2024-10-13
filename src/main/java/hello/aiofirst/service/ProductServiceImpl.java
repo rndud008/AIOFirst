@@ -97,20 +97,29 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public PageResponseDTO<ProductDTO> getPageProductList(PageRequestDTO pageRequestDTO, Long categoryId) {
+    public PageResponseDTO<ProductDTO> getPageProductList(PageRequestDTO pageRequestDTO, Long categoryId, boolean topCategory) {
 
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage()-1,pageRequestDTO.getSize(), Sort.by("id").descending());
+        Page<Product> result = null;
 
-        Page<Object[]> result = productRepository.selectList(pageable,ProductStatus.SELL, categoryId);
+        if (topCategory){
+            result = productRepository.selectList(pageable, categoryId);
+        }else {
+            result = productRepository.selectSubList(pageable, categoryId);
+        }
 
-        List<ProductDTO> productDTOS = result.get().map(arr ->{
+
+        log.info("getPageProductList result ={}",result);
+
+
+        List<ProductDTO> productDTOS = result.stream().map(product ->{
             ProductDTO productDTO = null;
 
-            Product product = (Product) arr[0];
-            ProductImg productImg = (ProductImg) arr[1];
-            ProductAlpha productAlpha = (ProductAlpha) arr[2];
-            Category category = (Category) arr[3];
-            ProductDescriptionImg productDescriptionImg = (ProductDescriptionImg) arr[4];
+            Category category = product.getCategory();
+            List<ProductImg> productImgs = product.getProductImgs();
+            List<ProductAlpha> productAlphas = product.getProductAlphas();
+            List<ProductDescriptionImg> productDescriptionImgs = product.getProductDescriptionImgs();
+            List<ProductStatus> productStatuses = product.getProductStatuses();
 
             productDTO = ProductDTO.builder()
                     .id(product.getId())
@@ -125,8 +134,9 @@ public class ProductServiceImpl implements ProductService {
                             .categoryName(category.getCategoryName())
                             .depNo(category.getDepNo())
                             .build())
-                    .productImgFileNames(List.of(productImg.getFileName()))
-                    .productDescriptionImgFileNames(List.of(productDescriptionImg.getDescriptionFileName()))
+                    .productImgFileNames(productImgs.stream().map(ProductImg::getFileName).collect(Collectors.toList()))
+                    .productDescriptionImgFileNames(productDescriptionImgs.stream().map(ProductDescriptionImg::getDescriptionFileName).collect(Collectors.toList()))
+                    .productStatuses(productStatuses.stream().map(ProductStatus::name).collect(Collectors.toList()))
                     .build();
 
             return productDTO;
