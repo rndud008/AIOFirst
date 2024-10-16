@@ -1,5 +1,6 @@
 package hello.aiofirst.domain;
 
+import hello.aiofirst.dto.ProductVariantDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,4 +24,12 @@ public class ProductVariant {
     private String color;
     private int price;
     private int stockQuantity;
+    private boolean delFlag;
+
+    public void changeProductVariant(ProductVariantDTO productVariantDTO){
+        this.size = productVariantDTO.getSize();
+        this.color = productVariantDTO.getColor();
+        this.price = productVariantDTO.getPrice();
+        this.stockQuantity = productVariantDTO.getStockQuantity();
+    }
 }

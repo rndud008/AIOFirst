@@ -6,6 +6,7 @@ import hello.aiofirst.dto.PageResponseDTO;
 import hello.aiofirst.dto.ProductDTO;
 import hello.aiofirst.service.CategoryService;
 import hello.aiofirst.service.ProductService;
+import hello.aiofirst.service.ProductVariantService;
 import hello.aiofirst.util.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ public class ProductController {
 
     private final CustomFileUtil fileUtil;
     private final ProductService productService;
+    private final ProductVariantService productVariantService;
     private final CategoryService categoryService;
 
     @GetMapping("/admin/product")
@@ -64,7 +66,8 @@ public class ProductController {
         log.info("productImgFileNames ={}",productImgFileNames);
         log.info("productDescriptionFileNames ={}",productDescriptionFileNames);
 
-         productService.save(productDTO);
+        Long productId = productService.save(productDTO);
+        productVariantService.save(productId);
 
         return "views/layout";
     }

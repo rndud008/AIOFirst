@@ -3,6 +3,8 @@ package hello.aiofirst.domain;
 import hello.aiofirst.dto.ProductDTO;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ public class Product {
 
     private String size;
     private String color;
-    private String stockQuantity;
+    private int stockQuantity;
 
     private int consumerPrice;
     private int sellPrice;

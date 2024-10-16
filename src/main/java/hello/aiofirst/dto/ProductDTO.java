@@ -20,7 +20,7 @@ public class ProductDTO {
     private String productName;
     private String size;
     private String color;
-    private String stockQuantity;
+    private int stockQuantity;
 
     private int consumerPrice;
     private int sellPrice;
