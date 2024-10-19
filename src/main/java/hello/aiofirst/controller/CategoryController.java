@@ -20,14 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class CategoryController {
 
     private final CategoryService categoryService;
-    private final ProductService productService;
-
-    @GetMapping("/admin")
-    public String adminMain(Model model) {
-
-        return "views/layout";
-
-    }
 
     @GetMapping("/admin/category")
     public String adminCategory(Model model) {

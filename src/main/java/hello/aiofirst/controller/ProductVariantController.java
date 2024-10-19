@@ -1,22 +1,19 @@
 package hello.aiofirst.controller;
 
 import hello.aiofirst.domain.Product;
-import hello.aiofirst.dto.ProductDTO;
 import hello.aiofirst.dto.ProductVariantDTO;
 import hello.aiofirst.dto.ProductVariantListDTO;
 import hello.aiofirst.service.ProductService;
 import hello.aiofirst.service.ProductVariantService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Controller
 @RequiredArgsConstructor

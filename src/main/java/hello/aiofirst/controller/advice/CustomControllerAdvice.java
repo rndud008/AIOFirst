@@ -1,5 +1,6 @@
 package hello.aiofirst.controller.advice;
 
+import hello.aiofirst.util.CustomJSWTException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -20,5 +21,10 @@ public class CustomControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> notAccept(MethodArgumentNotValidException e){
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of("msg",e.getMessage()));
+    }
+
+    @ExceptionHandler(CustomJSWTException.class)
+    public ResponseEntity<?> handleJWTException(CustomJSWTException e){
+        return ResponseEntity.ok().body(Map.of("msg",e.getMessage()));
     }
 }

@@ -30,7 +30,7 @@ public class Member {
     private Gender gender;
 
     @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "role",joinColumns = @JoinColumn(name = "member_id"))
+    @CollectionTable(name = "member_role",joinColumns = @JoinColumn(name = "member_id"))
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private List<Role> roles= new ArrayList<>();

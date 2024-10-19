@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div style="width: 500px; height: 500px; outline: auto" >
+        <form method="post" id="loginForm" th:object="${adminLgoinDTO}">
+            <label for="username">id:</label>
+            <input type="text" id="username" th:field="*{username}"/>
+            <label for="password">password:</label>
+            <input type="password" id="password" th:field="*{password}"/>
+            <button type="button" onclick="login()">LogIn</button>
+        </form>
+
+        <button type="button" onclick="check()"> check</button>
+    </div>
+</body>
+
+<script>
+    const login = async () =>{
+
+        const data = new FormData(document.getElementById('loginForm'))
+
+        const response = await fetch(`/login`,{
+            method:'post',
+            body: data
+        })
+
+        if(!response.ok){
+            alert('존재하지 않는 회원입니다.')
+            return;
+        }
+
+        const responseData =  await response.text();
+        localStorage.setItem('Authorization',responseData);
+        alert('로그인 완료')
+
+        const json = JSON.parse(responseData);
+        console.log(json)
+
+        const accessToken = json.accessToken;
+        console.log(accessToken)
+
+        document.cookie = `accessToken=${accessToken}; path=/;`;
+
+        window.location.href='/'
+
+    }
+
+    const check = () =>{
+        const auth = localStorage.getItem('Authorization')
+        console.log(auth)
+
+        const json = JSON.parse(auth);
+        console.log(json)
+
+        const accessToken = json.accessToken;
+        console.log(accessToken)
+    }
+
+
+
+
+</script>
+</html>
