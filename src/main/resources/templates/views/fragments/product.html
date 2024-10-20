@@ -74,7 +74,7 @@
             th:onclick="|productSearchList(${subCategory.depNo}, ${subCategory.id})|"></button>
     <div style="display: flex" th:each="product : ${productDTOS.dtoList}">
         <div>
-            <img th:src="@{/admin/products/{fileName}(fileName='s_' +${product.productImgFileNames[0]})}"/>
+            <img th:src="@{${product.productImgFileNames[0]}}"/>
         </div>
         <div style="display: flex; flex-direction: column">
             <span>상품이름 :<span th:text="${product.productName}"></span></span>

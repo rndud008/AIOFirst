@@ -35,7 +35,7 @@ public class CategoryController {
         model.addAttribute("categoryCheck", true);
         model.addAttribute("categorySaveForm", true);
         model.addAttribute("categoryDTO", new CategoryDTO());
-        model.addAttribute("categoryDTOS", categoryService.getCategoryList(0l));
+        model.addAttribute("categoryDTOS", categoryService.getCategoryList(0L));
 
         return "views/layout";
 
@@ -58,7 +58,7 @@ public class CategoryController {
         model.addAttribute("categoryCheck", true);
         model.addAttribute("categoryModifyForm", true);
         model.addAttribute("categoryDTO", categoryService.getCategory(id));
-        model.addAttribute("categoryDTOS", categoryService.getCategoryList(0l));
+        model.addAttribute("categoryDTOS", categoryService.getCategoryList(0L));
 
         return "views/layout";
 
@@ -87,7 +87,7 @@ public class CategoryController {
     public String categoryList(Model model){
         model.addAttribute("categoryCheck", true);
         model.addAttribute("categorySearch", true);
-        model.addAttribute("categoryDTOS", categoryService.getCategoryList(0l));
+        model.addAttribute("categoryDTOS", categoryService.getCategoryList(0L));
 
         return "views/layout";
     }
