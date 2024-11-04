@@ -37,14 +37,6 @@
         localStorage.setItem('Authorization',responseData);
         alert('로그인 완료')
 
-        const json = JSON.parse(responseData);
-        console.log(json)
-
-        const accessToken = json.accessToken;
-        console.log(accessToken)
-
-        document.cookie = `accessToken=${accessToken}; path=/;`;
-
         window.location.href='/'
 
     }

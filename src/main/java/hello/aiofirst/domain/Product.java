@@ -23,7 +23,6 @@ public class Product {
     private Long id;
     private String productName;
 
-
     private String size;
     private String color;
     private int stockQuantity;

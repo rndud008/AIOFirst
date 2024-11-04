@@ -7,9 +7,13 @@ import hello.aiofirst.security.auth.CustomDetails;
 import hello.aiofirst.util.JWTUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.boot.web.servlet.server.Session;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -62,7 +67,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         log.info("successfulAuthentication adminDetails ={}",adminDetails);
 
-        AdminDTO adminDTO = new AdminDTO(adminDetails.getAdmin().getId(),
+        AdminDTO adminDTO = new AdminDTO(
+                adminDetails.getAdmin().getId(),
                 adminDetails.getAdmin().getUsername(),
                 adminDetails.getAdmin().getPassword(),
                 adminDetails.getAdmin().getNickname(),
@@ -73,14 +79,24 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String accessToken = jwtUtil.generateToken(claims,10);
         String refreshToken = jwtUtil.generateToken(claims,60 * 24);
 
-        claims.put("accessToken", accessToken);
-        claims.put("refreshToken", refreshToken);
+        Cookie accessCookie =  new Cookie("accessToken",accessToken);
+        accessCookie.setPath("/");
+        accessCookie.setSecure(false);
+
+        ResponseCookie cookie = ResponseCookie.from("refreshToken",refreshToken)
+                .httpOnly(true)
+                .secure(false)
+                .maxAge(Duration.ofDays(1))
+                .path("/")
+                .build();
 
         Gson gson = new Gson();
 
         String jsonStr = gson.toJson(claims);
 
         response.setContentType("application/json; charset=UTF-8");
+        response.addHeader("Set-Cookie",cookie.toString());
+        response.addCookie(accessCookie);
 
         PrintWriter printWriter = response.getWriter();
         printWriter.println(jsonStr);

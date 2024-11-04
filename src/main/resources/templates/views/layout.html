@@ -12,8 +12,8 @@
     <div style="width: 200px; height: 500px; outline: 1px solid blue">
         <div onclick="categoryManage()">카테고리관리</div>
         <div onclick="productManage()">상품관리</div>
-        <div onclick="loadFlagMents('userManageMent','route')">회원관리</div>
-        <div onclick="loadFlagMents('orderManageMent','route')">주문관리</div>
+<!--        <div onclick="memberManage()">회원관리</div>-->
+        <div onclick="orderManage()">주문관리</div>
         <div onclick="loadFlagMents('inquiryManageMent','route')">문의내역</div>
         <div onclick="loadFlagMents('statistics','route')">통 계</div>
     </div>
@@ -31,6 +31,8 @@
         <div th:if="${categorySearch}" th:fragment="categoryMiddleContent">
             <div th:replace="views/fragments/category :: categorySearch"></div>
         </div>
+
+
         <div th:if="${productCheck}" th:fragment="productTopContent">
             <div th:replace="views/fragments/product :: productManagement"></div>
         </div>
@@ -50,6 +52,16 @@
             <div th:replace="views/fragments/product :: productSearchAllResult"></div>
         </div>
 
+        <div th:if="${orderCheck}">
+            <th:block th:insert="views/fragments/order :: orderManagement"></th:block>
+        </div>
+
+        <div th:if="${orderDetailCheck}">
+            <th:block th:insert="views/fragments/order :: orderDetail"></th:block>
+        </div>
+
+
+
     </div>
 
 </div>
@@ -60,6 +72,107 @@
 <script  src="/js/product.js"></script>
 
 <script>
+    const orderManage = () =>{
+        window.location.href = '/admin/orders'
+    }
+
+    const orderStatusChange = async (button, status ="") =>{
+
+        const div = button.closest('div').parentNode;
+        console.log(div)
+
+        const orderId = div.querySelector("input[type='hidden']").value;
+        const item ={
+            orderId,
+            status
+        }
+
+        const response = await fetch(`/api/orders/status`,{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(item)
+        })
+
+        const data = await response.text();
+
+        if (response.status === 200){
+
+            div.querySelector('#orderStatus').textContent = data
+            button.remove()
+            alert("변경완료")
+        }else {
+            alert("잘못된요청입니다.")
+        }
+
+    }
+
+    const getOrderList = async (status ="") =>{
+
+        const response = await fetch(`/api/orders?status=${status}`,{
+            method:"GET"
+        })
+
+        const data = await response.json();
+
+        if(response.status === 200){
+            console.log(data)
+            console.log(data.length)
+            const ordersDiv = document.getElementById('orders');
+            if(data.length === 0){
+                ordersDiv.innerHTML =`<div style="display: flex; padding: 10px">주문 내역이 존재하지 않습니다.</div>`
+            }else {
+                let html = "";
+
+                data.forEach(order =>{
+                    html +=
+                        `
+                        <div style="display: flex; padding: 10px">
+                            <input type="hidden" value="${order.orderId}">
+                            <div><span>${order.index}</span></div>
+                            <div>
+                                <a style="display: flex; flex-direction: column" href='/admin/orders/detail/${order.orderId}' >
+                                   `
+                        order.orderItemDTOS.forEach(orderItem =>{
+                            html +=
+                                `
+                                    <span>
+                                        <span>${orderItem.productName}</span>
+                                        <span>${orderItem.option}</span>
+                                    </span>
+                                `
+                        })
+                    html +=
+                        `
+                         </a>
+                            </div>
+                            <div><span >${order.totalPrice}</span></div>
+                            <div><span id="orderStatus">${order.status}</span></div>
+                            <div><span >${order.createdAt}</span></div>
+                            <div>
+                             `
+                        if(order.itemPending){
+                            html += `<button onclick="orderStatusChange(this,'OK')">주문확인</button>`
+                        }
+                    if(order.adminCheck){
+                        html += `<button onclick="orderStatusChange(this,'CANCEL')">주문취소</button>`
+                    }
+                    html +=
+                        `
+                        </div>
+                        </div>
+                        `
+                })
+
+                ordersDiv.innerHTML = html;
+            }
+
+        }else {
+            alert("잘못된 요청입니다.")
+        }
+
+    }
 
 
 

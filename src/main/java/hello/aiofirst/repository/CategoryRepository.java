@@ -10,8 +10,10 @@ import java.util.Optional;
 
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-
     List<Category> findCategoriesByDepNo (Long depno);
+
+    @Query("select c from Category c where c.depNo in(:depno)")
+    List<Category> findCategoriesByDepNoAndInquery(@Param("depno") List<Long> depno);
 
     Optional<Category>  findByCategoryName(String name);
 

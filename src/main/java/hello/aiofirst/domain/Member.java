@@ -23,6 +23,8 @@ public class Member {
     private String email;
     private String provider;
     private int phoneNumber;
+
+
     private LocalDate createdAt;
     private LocalDate birthday;
 
@@ -35,11 +37,14 @@ public class Member {
     @Builder.Default
     private List<Role> roles= new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable(name = "address", joinColumns = @JoinColumn(name = "member_id"))
+    @OneToMany(mappedBy = "member")
     @Builder.Default
     private List<Address> addresses = new ArrayList<>();
 
+    @PrePersist
+    public void prePersist(){
+        this.createdAt = LocalDate.now();
+    }
 
     public void addRole(Role role){
         roles.add(role);
@@ -53,8 +58,6 @@ public class Member {
         addresses.add(address);
     }
 
-//    public void modifyAddress(Address address){
-//
-//    }
+
 
 }

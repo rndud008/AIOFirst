@@ -22,8 +22,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public List<CategoryDTO> getCategoryList(Long dpeno) {
-        List<Category> categories = categoryRepository.findCategoriesByDepNo(dpeno);
+    public List<CategoryDTO> getCategoryList(Long depno) {
+        Category inquery = categoryRepository.findByCategoryName("커뮤니티").orElse(null);
+        List<Category> categories;
+        if (inquery != null){
+            categories= categoryRepository.findCategoriesByDepNoAndInquery(List.of(depno, inquery.getId()));
+        }else {
+            categories= categoryRepository.findCategoriesByDepNoAndInquery(List.of(depno));
+        }
 
         log.info("getCategoryList ={}",categories);
 
@@ -34,10 +40,8 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         for(Category category : categories){
-
             List<CategoryDTO> categoryDTOList = getCategoryDTOS(categoryRepository.findCategoriesByDepNo(category.getId()));
             CategoryDTO categoryDTO = categoryToCategoryDTO(category,categoryDTOList);
-
             categoryDTOS.add(categoryDTO);
         }
 

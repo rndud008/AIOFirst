@@ -52,13 +52,11 @@ public class CustomSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/loginPage").permitAll()
                         .requestMatchers( "/js/**").permitAll()
-                        .requestMatchers("/login","/refresh").permitAll()
+                        .requestMatchers("/login","/refresh","/join").permitAll()
                         .requestMatchers("/admin/**", "/").hasRole("ADMIN").anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/loginPage")
                         .loginProcessingUrl("/login")
-                        .successHandler(new LoginSuccessHandler(jwtUtil))
-                        .failureHandler(new LoginFailHandler())
                         .permitAll())
                 .addFilterBefore(new JWTCheckFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationManager), jwtUtil), UsernamePasswordAuthenticationFilter.class);

@@ -11,6 +11,8 @@ import hello.aiofirst.service.S3ImageService;
 import hello.aiofirst.util.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +36,8 @@ public class ProductController {
     private final S3ImageService s3ImageService;
 
     @GetMapping("/admin/product")
-    public String adminProduct(Model model) {
+    public String adminProduct(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        log.info("userDetails = {}",userDetails);
 
         model.addAttribute("productCheck", true);
 

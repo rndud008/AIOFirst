@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Admin {
+public class Admin extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "admin_id")
@@ -22,9 +22,6 @@ public class Admin {
     private String username;
     private String password;
     private String nickname;
-
-    @Column(updatable = false)
-    private LocalDate createdAt;
     
     @ElementCollection
     @CollectionTable(name = "admin_role" , joinColumns = @JoinColumn(name = "admin_id"))
@@ -32,12 +29,11 @@ public class Admin {
     @Enumerated(EnumType.STRING)
     private List<Role> roles = new ArrayList<>();
 
-    public Admin resisterAdmin(String username, String password, String nickname, LocalDate createdAt, List<Role> roles){
+    public Admin resisterAdmin(String username, String password, String nickname, List<Role> roles){
         return Admin.builder()
                 .username(username)
                 .password(password)
                 .nickname(nickname)
-                .createdAt(createdAt)
                 .roles(roles)
                 .build();
 

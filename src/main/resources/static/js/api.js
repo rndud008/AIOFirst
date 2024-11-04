@@ -1,6 +1,8 @@
 const getRespsonse = async (url) => {
 
-    const accessToken = getAccessToken();
+    const accessToken = await getAccessToken();
+
+    console.log(accessToken)
 
     const response = await fetch(`${url}`, {
         method: 'GET',
@@ -9,32 +11,15 @@ const getRespsonse = async (url) => {
         }
     })
 
-    if (response.statusText === 'ERROR_ACCESS_TOKEN') {
-
-        await fetchRefreshToken(accessToken);
-
-        const newAccessToken = getAccessToken();
-
-        const retryResponse = await fetch(`${url}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${newAccessToken}`
-            }
-        })
-
-        return retryResponse;
-    }
-
-
     return response;
 
 }
 
 const postResponse = async (url, data) => {
 
-    const accessToken = getAccessToken();
+    const accessToken = await getAccessToken();
+    console.log(accessToken)
 
-    try {
         const response = await fetch(`${url}`, {
             method: 'POST',
             body: data,
@@ -45,30 +30,13 @@ const postResponse = async (url, data) => {
 
         return response;
 
-    } catch (e) {
-        if (e.message === 'ERROR_ACCESS_TOKEN') {
 
-            await fetchRefreshToken(accessToken);
-
-            const newAccessToken = getAccessToken();
-
-            const retryResponse = await fetch(`${url}`, {
-                method: 'POST',
-                body: data,
-                headers: {
-                    'Authorization': `Bearer ${newAccessToken}`
-                }
-            })
-
-            return retryResponse;
-
-        }
-    }
 
 }
 
 const deleteResponse = async (url,) => {
     const accessToken = await getAccessToken();
+    console.log(accessToken)
 
     const response = await fetch(`${url}`, {
         method: 'DELETE',
@@ -81,47 +49,18 @@ const deleteResponse = async (url,) => {
 
 }
 
-const getAccessToken = () => {
-    const auth = localStorage.getItem('Authorization')
+const getAccessToken = async () => {
+    const cookies = document.cookie.split('; ');
+    console.log(cookies)
 
-    const json = JSON.parse(auth);
-
-    return json.accessToken;
-}
-
-const getRefreshToken = () => {
-
-    const auth = localStorage.getItem('Authorization')
-
-    const json = JSON.parse(auth);
-
-    return json.refreshToken;
-
-}
-
-const fetchRefreshToken = async (accessToken) => {
-    const refreshToken = getRefreshToken();
-
-    const response = await fetch(`/refresh?refreshToken=${refreshToken}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`
+    cookies.forEach(cookie =>{
+        const [name,value] = cookie.split('=')
+        console.log("name:",name,"value:",value)
+        if(name === "accessToken"){
+            return decodeURIComponent(value);
         }
     })
 
-    const data = await response.json();
-
-    const newAccessToken = data.accessToken
-    const newRefreshToken = data.refreshToken;
-
-    document.cookie = `accessToken=${newAccessToken}; path=/;`;
-
-    const auth = localStorage.getItem('Authorization')
-
-    const json = JSON.parse(auth);
-
-    json.accessToken = newAccessToken;
-    json.refreshToken = newRefreshToken;
-
-    localStorage.setItem('Authorization', JSON.stringify(json));
+    return "";
 }
+
