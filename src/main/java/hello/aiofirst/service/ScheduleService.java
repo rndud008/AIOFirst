@@ -1,9 +1,8 @@
 package hello.aiofirst.service;
 
-import hello.aiofirst.domain.Order;
-import hello.aiofirst.domain.OrderStatus;
-import hello.aiofirst.domain.PaymentStatus;
+import hello.aiofirst.domain.*;
 import hello.aiofirst.repository.OrderRepository;
+import hello.aiofirst.repository.PointRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,6 +17,7 @@ import java.util.List;
 public class ScheduleService {
 
     private final OrderRepository orderRepository;
+    private final PointRepository pointRepository;
 
     @Transactional
     @Scheduled(cron = "0 0 2 * * ?")
@@ -32,6 +32,8 @@ public class ScheduleService {
                     order.changeStatus(OrderStatus.DELIVERY_IN_PROGRESS);
                 } else if (order.getOrderStatus().equals(OrderStatus.DELIVERY_IN_PROGRESS)) {
                     order.changeStatus(OrderStatus.DELIVERY_COMPLETED);
+                    Point point = pointRepository.getPoint(order.getId());
+                    point.changeStatus(PointStatus.EARNED);
                 }
             }
         }

@@ -31,9 +31,14 @@ public class Order extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    private boolean adminCheck;
+
     public void changeStatus(OrderStatus orderStatus){
         this.orderStatus = orderStatus;
     }
 
+    public void changeAdmin(boolean check){
+        this.adminCheck = check;
+    }
 
 }

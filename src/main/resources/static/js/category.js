@@ -2,20 +2,20 @@
 
 const categoryManage = async ()=>{
 
-    const response = await getRespsonse(`/admin/category`)
+    const response = await getResponse(`/admin/category`)
 
     window.location.href ='/admin/category';
 
 }
 
 const categoryList = async () =>{
-    const response = await getRespsonse('/admin/categories')
+    const response = await getResponse('/admin/categories')
 
     window.location.href = `/admin/categories`;
 }
 
 const categorySaveForm = async ()=>{
-    const api = await getRespsonse(`/admin/category/save`)
+    const api = await getResponse(`/admin/category/save`)
 
     window.location.href ='/admin/category/save';
 }
@@ -36,6 +36,8 @@ const categorySave = async () =>{
 
     const response = await postResponse(`/admin/category/save`, data)
 
+    console.log(response)
+
     response.status === 200 && alert('저장 완료')
 
     saveButton.disabled =false;
@@ -45,7 +47,7 @@ const categorySave = async () =>{
 
 const categoryModifyForm = async (id) =>{
 
-    const response = await getRespsonse(`/admin/category/modify/${id}`)
+    const response = await getResponse(`/admin/category/modify/${id}`)
 
     window.location.href =`/admin/category/modify/${id}`
 
@@ -60,17 +62,19 @@ const categoryModify = async ()=>{
         return;
     }
 
-    const saveButton = document.getElementById('modifyButton');
+    const modifyButton = document.getElementById('modifyButton');
 
-    saveButton.disabled =true;
+    modifyButton.disabled =true;
 
-    const data = new URLSearchParams(new FormData(document.getElementById('categoryModify')))
+    const data = new FormData(document.getElementById('categoryModify'))
 
     const api = await postResponse(`/admin/category/modify`, data)
 
+    console.log(api)
+
     api.status === 200 && alert('수정 완료')
 
-    saveButton.disabled =false;
+    modifyButton.disabled =false;
 
     window.location.assign('/admin/categories')
 
@@ -82,7 +86,8 @@ const categoryRemove = async (param)=>{
         return;
     }
 
-    const api = await deleteResponse(`/category/delete?id=${param}`)
+    const api = await deleteResponse(`/admin/category/delete?id=${param}`)
+
 
     api.status === 200 && alert('삭제 완료')
     window.location.href='/admin/categories'

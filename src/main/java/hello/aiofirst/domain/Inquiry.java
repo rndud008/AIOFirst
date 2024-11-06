@@ -31,5 +31,9 @@ public class Inquiry extends BaseEntity {
     private String img;
     private boolean answer;
 
+    public void changeAnswer(boolean check){
+        this.answer = check;
+
+    }
 
 }

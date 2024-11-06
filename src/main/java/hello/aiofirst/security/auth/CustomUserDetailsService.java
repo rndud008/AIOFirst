@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Admin admin = adminRepository.getWithRoles(username);
+        Admin admin = adminRepository.getWithRoles(username.toUpperCase());
 
         if (admin == null){
             throw new UsernameNotFoundException("Not Found");

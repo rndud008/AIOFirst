@@ -53,7 +53,7 @@ public class KakaoPayService {
         Point point = pointRepository.getPoint(order.getId());
         
         if (point.getPointStatus().equals(PointStatus.PENDING) || point.getPointStatus().equals(PointStatus.EARNED)){
-            point.pendingChange(PointStatus.EARNED_CANCEL);
+            point.changeStatus(PointStatus.EARNED_CANCEL);
         }
 
     }

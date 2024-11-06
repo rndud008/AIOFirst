@@ -5,61 +5,81 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/category.css">
     <title>메인페이지</title>
 </head>
 <body>
-<div style="display: flex; margin: 0 auto; outline: auto; width: 1000px; min-height: 600px">
-    <div style="width: 200px; height: 500px; outline: 1px solid blue">
+<div id="layout" >
+    <div id="layoutLeft" >
         <div onclick="categoryManage()">카테고리관리</div>
         <div onclick="productManage()">상품관리</div>
 <!--        <div onclick="memberManage()">회원관리</div>-->
         <div onclick="orderManage()">주문관리</div>
-        <div onclick="loadFlagMents('inquiryManageMent','route')">문의내역</div>
-        <div onclick="loadFlagMents('statistics','route')">통 계</div>
+        <div onclick="inquiryManage()">문의내역</div>
+<!--        <div onclick="loadFlagMents('statistics','route')">통 계</div>-->
     </div>
-    <div style="width: 100%; height: 500px; outline: 1px solid red">
+    <div id="layoutRight" >
 
-        <div th:if="${categoryCheck}" th:fragment="categoryTopContent">
-            <div th:replace="views/fragments/category :: categoryManagement"></div>
-        </div>
-        <div th:if="${categorySaveForm}" th:fragment="categoryMiddleContent">
-            <div th:replace="views/fragments/category :: categorySaveForm"></div>
-        </div>
-        <div th:if="${categoryModifyForm}" th:fragment="categoryMiddleContent">
-            <div th:replace="views/fragments/category :: categoryModifyForm"></div>
-        </div>
-        <div th:if="${categorySearch}" th:fragment="categoryMiddleContent">
-            <div th:replace="views/fragments/category :: categorySearch"></div>
-        </div>
+        <th:block th:if="${categoryCheck}" th:fragment="categoryTopContent">
+            <th:block  th:insert="views/fragments/category :: categoryManagement"></th:block >
+        </th:block>
 
+        <th:block  th:if="${categorySaveForm}" th:fragment="categoryMiddleContent">
+            <th:block  th:insert="views/fragments/category :: categorySaveForm"></th:block >
+        </th:block >
 
-        <div th:if="${productCheck}" th:fragment="productTopContent">
-            <div th:replace="views/fragments/product :: productManagement"></div>
-        </div>
-        <div th:if="${productSaveForm}" th:fragment="productMiddleContent">
-            <div th:replace="views/fragments/product :: productSaveForm"></div>
-        </div>
-        <div th:if="${productSearch}" th:fragment="productMiddleContent">
-            <div th:replace="views/fragments/product :: productSearch"></div>
-        </div>
-        <div th:if="${productModifyForm}" th:fragment="productMiddleContent">
-            <div th:replace="views/fragments/product :: productModifyForm"></div>
-        </div>
-        <div th:if="${productVariantForm}" th:fragment="productMiddleContent">
-            <div th:replace="views/fragments/product :: productVariantForm"></div>
-        </div>
-        <div th:if="${productSearchAllResult}" th:fragment="productBottomContent">
-            <div th:replace="views/fragments/product :: productSearchAllResult"></div>
-        </div>
+        <th:block  th:if="${categoryModifyForm}" th:fragment="categoryMiddleContent">
+            <th:block  th:insert="views/fragments/category :: categoryModifyForm"></th:block >
+        </th:block >
 
-        <div th:if="${orderCheck}">
+        <th:block  th:if="${categorySearch}" th:fragment="categoryMiddleContent">
+            <th:block  th:insert="views/fragments/category :: categorySearch"></th:block >
+        </th:block >
+
+        <th:block  th:if="${productCheck}" th:fragment="productTopContent">
+            <th:block  th:insert="views/fragments/product :: productManagement"></th:block >
+        </th:block >
+
+        <th:block  th:if="${productSaveForm}" th:fragment="productMiddleContent">
+            <th:block  th:insert="views/fragments/product :: productSaveForm"></th:block >
+        </th:block >
+
+        <th:block  th:if="${productSearch}" th:fragment="productMiddleContent">
+            <th:block  th:insert="views/fragments/product :: productSearch"></th:block >
+        </th:block >
+
+        <th:block  th:if="${productModifyForm}" th:fragment="productMiddleContent">
+            <th:block  th:insert="views/fragments/product :: productModifyForm"></th:block >
+        </th:block >
+
+        <th:block  th:if="${productVariantForm}" th:fragment="productMiddleContent">
+            <th:block  th:insert="views/fragments/product :: productVariantForm"></th:block >
+        </th:block >
+
+        <th:block  th:if="${productSearchAllResult}" th:fragment="productBottomContent">
+            <th:block  th:insert="views/fragments/product :: productSearchAllResult"></th:block >
+        </th:block >
+
+        <th:block  th:if="${orderCheck}">
             <th:block th:insert="views/fragments/order :: orderManagement"></th:block>
-        </div>
+        </th:block >
 
-        <div th:if="${orderDetailCheck}">
+        <th:block  th:if="${orderDetailCheck}">
             <th:block th:insert="views/fragments/order :: orderDetail"></th:block>
-        </div>
+        </th:block >
 
+        <th:block  th:if="${inquiryCheck}">
+            <th:block th:insert="views/fragments/inquiry :: inquiryManagement"></th:block>
+        </th:block >
+
+        <th:block  th:if="${inquiryDetailCheck}">
+            <th:block th:insert="views/fragments/inquiry :: inquiryDetail"></th:block>
+        </th:block >
+
+        <th:block  th:if="${inquiryModifyFormCheck}">
+            <th:block th:insert="views/fragments/inquiry :: inquiryModifyForm"></th:block>
+        </th:block >
 
 
     </div>
@@ -87,13 +107,7 @@
             status
         }
 
-        const response = await fetch(`/api/orders/status`,{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify(item)
-        })
+        const response = await postJsonResponse(`/api/orders/status`, JSON.stringify(item))
 
         const data = await response.text();
 
@@ -110,9 +124,7 @@
 
     const getOrderList = async (status ="") =>{
 
-        const response = await fetch(`/api/orders?status=${status}`,{
-            method:"GET"
-        })
+        const response = await getResponse(`/api/orders?status=${status}`)
 
         const data = await response.json();
 
@@ -174,6 +186,70 @@
 
     }
 
+    // 문의 내역
+    const inquiryManage = () =>{
+        window.location.href = '/admin/inquiries'
+    }
+
+    const historyBack = () =>{
+        history.back();
+    }
+
+    const inquiryAnswerSave = async () =>{
+
+        const inquiryId = document.getElementById('inquiry').querySelector('input[type="hidden"]').value;
+        const adminContent = document.querySelector('textarea').value;
+
+        const item ={
+            inquiryId,
+            adminContent
+        }
+
+        const response = await postJsonResponse('/api/inquiries/save',JSON.stringify(item));
+
+        if (response.status === 200){
+            alert('저장완료')
+            window.location.href;
+        }else {
+            alert('저장실패')
+        }
+
+    }
+
+    const inquiryAnswerModifyForm = () =>{
+        const inquiryId = document.getElementById('inquiry').querySelector('input[type="hidden"]').value;
+        window.location.href = `/admin/inquiries/modifyform/${inquiryId}`
+    }
+
+    const inquiryAnswerModify = async () =>{
+        const inquiryAnswerId = document.getElementById('inquiryAnswer').querySelector('input[type="hidden"]').value;
+        const adminContent = document.querySelector('textarea').value;
+
+        const item ={
+            inquiryAnswerId,
+            adminContent
+        }
+
+        const response = await postJsonResponse('/api/inquiries/modify',JSON.stringify(item));
+
+        if (response.status === 200){
+            const data = await response.text();
+            console.log(data);
+            alert('변경완료')
+            window.location.href = `/admin/inquiries/detail/${inquiryAnswerId}`
+        }else {
+            alert('잘못된요청입니다.')
+        }
+
+    }
+
+    const inquiryList = ()=>{
+        window.location.href = `/admin/inquiries`
+    }
+
+    const noAnswerInquiryList = () =>{
+        window.location.href = `/admin/inquiries/noanswer`
+    }
 
 
 </script>

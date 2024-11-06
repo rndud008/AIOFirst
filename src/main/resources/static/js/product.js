@@ -1,7 +1,7 @@
 
 
 const productManage = async () => {
-    const api = await getRespsonse(`/admin/product`)
+    const api = await getResponse(`/admin/product`)
 
     window.location.href = '/admin/product'
 }
@@ -11,7 +11,7 @@ const productValidation = () => {
 }
 
 const productSaveForm = async () => {
-    const api = await getRespsonse(`/admin/product/save`)
+    const api = await getResponse(`/admin/product/save`)
 
     window.location.href = '/admin/product/save'
 }
@@ -40,7 +40,7 @@ const productSave = async () => {
 
 const productSearch = async () => {
 
-    const api = await getRespsonse(`/admin/product/menu`)
+    const api = await getResponse(`/admin/product/menu`)
 
     window.location.href = '/admin/product/menu'
 
@@ -75,7 +75,7 @@ const productSearchList = async (categoryId, subcategory = 0, currentPage = 0) =
 
     const url = `/admin/product/menu/${categoryId}?${queryParams.toString()}`;
 
-    const api = await getRespsonse(url)
+    const api = await getResponse(url)
 
     window.location.href = `${url}`
 
@@ -83,7 +83,7 @@ const productSearchList = async (categoryId, subcategory = 0, currentPage = 0) =
 
 const productModifyForm = async (id) => {
 
-    const api = await getRespsonse(`/admin/product/modify/${id}`)
+    const api = await getResponse(`/admin/product/modify/${id}`)
 
     window.location.href = `/admin/product/modify/${id}`
 }
@@ -110,7 +110,7 @@ const productModify = async (id) => {
 
 const productVariantForm = async (id) => {
 
-    const api = await getRespsonse(`/admin/product/variant/${id}`)
+    const api = await getResponse(`/admin/product/variant/${id}`)
 
     window.location.href = `/admin/product/variant/${id}`
 

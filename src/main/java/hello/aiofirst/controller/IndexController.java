@@ -46,7 +46,7 @@ public class IndexController {
     public String join(@RequestBody LoginRequestDTO adminRequestDTO){
 
         Admin admin = new Admin().resisterAdmin(
-                adminRequestDTO.getUsername(), bCryptPasswordEncoder.encode(adminRequestDTO.getPassword()) ,"관리자", List.of(Role.ADMIN,Role.MEMBER)
+                adminRequestDTO.getUsername().toUpperCase(), bCryptPasswordEncoder.encode(adminRequestDTO.getPassword()) ,"관리자", List.of(Role.ADMIN,Role.MEMBER)
         );
 
         adminRepository.save(admin);

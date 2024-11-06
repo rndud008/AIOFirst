@@ -24,6 +24,13 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     @Query("select o, p from Order o " +
             "left join fetch Payment p on p.order.id = o.id " +
             "and p.paymentStatus in(:paymentStatuses) " +
+            "where o.adminCheck = :adminCheck " +
+            "order by o.createdAt desc ")
+    List<Order> getOrderList(@Param("paymentStatuses")List<PaymentStatus> paymentStatuses, @Param("adminCheck") boolean adminCheck);
+
+    @Query("select o, p from Order o " +
+            "left join fetch Payment p on p.order.id = o.id " +
+            "and p.paymentStatus in(:paymentStatuses) " +
             "where o.orderStatus = :orderStatus " +
             "order by o.createdAt desc ")
     List<Order> getOrderList(@Param("paymentStatuses")List<PaymentStatus> paymentStatuses, @Param("orderStatus") OrderStatus orderStatus);

@@ -20,7 +20,7 @@ public class OrderController {
     public String orderManagementPage(Model model){
 
         model.addAttribute("orderCheck",true);
-        model.addAttribute("orders", orderService.getOrderDTOList());
+        model.addAttribute("orders", orderService.getOrderDTOList(false));
 
         return "views/layout";
     }

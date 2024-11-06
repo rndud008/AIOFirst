@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="inquiryManagement">
+    inquiryManagement
+    <div th:text="${inquiries}"></div>
+    <div>
+        <button onclick="inquiryList()">전체 문의내역</button>
+        <button onclick="noAnswerInquiryList()">미답변 문의내역</button>
+    </div>
+    <div>
+        <div>
+            <div>#</div>
+            <div>분류</div>
+            <div>제목</div>
+            <div>직상일</div>
+            <div>이름</div>
+            <div>답변여부</div>
+        </div>
+    </div>
+    <div>
+        <div style="display: flex" th:each="inquiry : ${inquiries}">
+            <div>
+                <span th:text="${inquiry.inquiryId}"></span>
+                <input type="hidden" th:value="${inquiry.categoryId}"/>
+            </div>
+            <div>
+                <span th:text="${inquiry.categoryName}"></span>
+            </div>
+            <div>
+                <a th:href="@{'/admin/inquiries/detail/'+${inquiry.inquiryId}}">
+                    <span th:text="${inquiry.title}"></span>
+                </a>
+            </div>
+            <div>
+                <span th:text="${inquiry.createdAt}"></span>
+            </div>
+            <div>
+                <span th:text="${inquiry.username}"></span>
+            </div>
+            <div>
+                <span th:if="${inquiry.inquiryAnswer}">답변완료</span>
+                <span th:unless="${inquiry.inquiryAnswer}">미답변</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="inquiryDetail">
+    inquiryDetail
+    <div th:text="${inquiryDetailDTO}"></div>
+    <div>
+        <div id="inquiry">
+            <div><input type="hidden" th:value="${inquiryDetailDTO.inquiryId}"/></div>
+            <div><span th:text="${inquiryDetailDTO.createdAt}"></span></div>
+            <div><span th:text="${inquiryDetailDTO.username}"></span></div>
+            <div><span th:text="${inquiryDetailDTO.title}"></span></div>
+            <div><span th:text="${inquiryDetailDTO.content}"></span></div>
+        </div>
+        <div id="inquiryAnswer">
+            <th:block th:if="${inquiryDetailDTO.inquiryAnswer}">
+                <input type="hidden" th:value="${inquiryDetailDTO.InquiryAnswerId}"/>
+                <div><span th:text="${inquiryDetailDTO.adminUsername}"></span></div>
+                <div><span id="adminContent" th:text="${inquiryDetailDTO.adminContent}"></span></div>
+                <div><span th:text="${inquiryDetailDTO.adminCreatedAt}"></span></div>
+            </th:block>
+
+            <th:block th:unless="${inquiryDetailDTO.inquiryAnswer}">
+                <div><span th:text="${inquiryDetailDTO.adminUsername}"></span></div>
+                <div><textarea></textarea></div>
+            </th:block>
+        </div>
+        <div>
+            <button onclick="historyBack()">이전으로</button>
+            <button th:if="${inquiryDetailDTO.inquiryAnswer}" onclick="inquiryAnswerModifyForm()">답변수정</button>
+            <button th:unless="${inquiryDetailDTO.inquiryAnswer}" onclick="inquiryAnswerSave()">답변저장</button>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="inquiryModifyForm">
+    inquiryModifyForm
+    <div th:text="${inquiryDetailDTO}"></div>
+    <div>
+        <div id="inquiry">
+            <div><input type="hidden" th:value="${inquiryDetailDTO.inquiryId}"/></div>
+            <div><span th:text="${inquiryDetailDTO.createdAt}"></span></div>
+            <div><span th:text="${inquiryDetailDTO.username}"></span></div>
+            <div><span th:text="${inquiryDetailDTO.title}"></span></div>
+            <div><span th:text="${inquiryDetailDTO.content}"></span></div>
+        </div>
+        <div id="inquiryAnswer">
+            <input type="hidden" th:value="${inquiryDetailDTO.InquiryAnswerId}"/>
+            <div><span th:text="${inquiryDetailDTO.adminUsername}"></span></div>
+            <div><textarea>[[${inquiryDetailDTO.adminContent}]]</textarea></div>
+            <div><span th:text="${inquiryDetailDTO.adminCreatedAt}"></span></div>
+        </div>
+        <div>
+            <button onclick="historyBack()">이전으로</button>
+            <button onclick="inquiryList()">목록</button>
+            <button onclick="inquiryAnswerModify()">답변수정</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

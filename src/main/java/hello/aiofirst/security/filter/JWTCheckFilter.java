@@ -74,7 +74,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
                 log.info("roleNames = {}",roleNames);
 
-                AdminDTO adminDTO = new AdminDTO(id, username, password, nickname, roleNames);
+                AdminDTO adminDTO = new AdminDTO(id, username.toUpperCase(), password, nickname, roleNames);
 
                 log.info("adminDTO = {}", adminDTO);
                 log.info("adminDTO.getAuthorities = {}", adminDTO.getAuthorities());
@@ -106,7 +106,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
                         String password = (String) refreshClaims.get("password");
                         List<String> roleNames = (List<String>) refreshClaims.get("roles");
 
-                        AdminDTO adminDTO = new AdminDTO(id, username, password, nickname, roleNames);
+                        AdminDTO adminDTO = new AdminDTO(id, username.toUpperCase(), password, nickname, roleNames);
 
                         UsernamePasswordAuthenticationToken authenticationToken
                                 = new UsernamePasswordAuthenticationToken(adminDTO, password, adminDTO.getAuthorities());

@@ -48,7 +48,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         System.out.println("password = " + password);
         System.out.println("username = " + username);
 
-        Authentication token = new UsernamePasswordAuthenticationToken(username.toLowerCase(), password, new ArrayList<>());
+        Authentication token = new UsernamePasswordAuthenticationToken(username.toUpperCase(), password, new ArrayList<>());
 
 
         try {

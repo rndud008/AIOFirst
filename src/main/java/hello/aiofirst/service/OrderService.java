@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    List<OrderDTO> getOrderDTOList();
+    List<OrderDTO> getOrderDTOList(boolean adminCheck);
     List<OrderDTO> getOrderDTOList(OrderStatus orderStatus);
 
     OrderDetailDTO getOrderDetailDTO(Long orderId);

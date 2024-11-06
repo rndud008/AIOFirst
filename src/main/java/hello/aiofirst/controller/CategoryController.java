@@ -64,7 +64,7 @@ public class CategoryController {
 
     }
 
-    @PutMapping("/admin/category/modify")
+    @PostMapping("/admin/category/modify")
     public String categoryModify(@ModelAttribute CategoryDTO categoryDTO) {
         log.info("categoryModify categoryDTO ={}", categoryDTO);
 

@@ -22,4 +22,9 @@ public class InquiryAnswer extends BaseEntity {
     private String name;
     private String content;
 
+    public void changeValue (String content, String name){
+        this.content = content;
+        this.name = name;
+    }
+
 }

@@ -1,10 +1,8 @@
-const getRespsonse = async (url) => {
+const getResponse = async (url) => {
 
     const accessToken = await getAccessToken();
 
-    console.log(accessToken)
-
-    const response = await fetch(`${url}`, {
+    const response = await fetch(url, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${accessToken}`
@@ -18,27 +16,41 @@ const getRespsonse = async (url) => {
 const postResponse = async (url, data) => {
 
     const accessToken = await getAccessToken();
-    console.log(accessToken)
 
-        const response = await fetch(`${url}`, {
-            method: 'POST',
-            body: data,
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        })
+    const response = await fetch(url, {
+        method: 'POST',
+        body: data,
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    })
 
-        return response;
-
-
+    return response;
 
 }
 
-const deleteResponse = async (url,) => {
-    const accessToken = await getAccessToken();
-    console.log(accessToken)
+const postJsonResponse = async (url, data) => {
 
-    const response = await fetch(`${url}`, {
+    const accessToken = await getAccessToken();
+
+    const response = await fetch(url, {
+        method: 'POST',
+        body: data,
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+        }
+    })
+
+    return response;
+
+}
+
+
+const deleteResponse = async (url) => {
+    const accessToken = await getAccessToken();
+
+    const response = await fetch(url, {
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${accessToken}`
@@ -51,14 +63,14 @@ const deleteResponse = async (url,) => {
 
 const getAccessToken = async () => {
     const cookies = document.cookie.split('; ');
-    console.log(cookies)
 
-    cookies.forEach(cookie =>{
-        const [name,value] = cookie.split('=')
-        console.log("name:",name,"value:",value)
-        if(name === "accessToken"){
+    cookies.forEach(cookie => {
+        const [name, value] = cookie.split('=')
+
+        if (name === "accessToken") {
             return decodeURIComponent(value);
         }
+
     })
 
     return "";

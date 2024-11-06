@@ -28,14 +28,9 @@ public class Point extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private PointStatus pointStatus;
 
-    public void pendingChange(PointStatus pointStatus){
+    public void changeStatus(PointStatus pointStatus){
         this.pointStatus = pointStatus;
     }
-
-    public void cancelChange(PointStatus pointStatus ,long value){
-        this.pointStatus = pointStatus;
-    }
-
 
 
 }

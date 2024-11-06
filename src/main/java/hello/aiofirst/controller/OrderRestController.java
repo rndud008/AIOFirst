@@ -43,11 +43,11 @@ public class OrderRestController {
     public ResponseEntity<?> orderList(@RequestParam("status") String status) {
         List<OrderDTO> orderDTOS;
         if (status.isEmpty()) {
-            orderDTOS = orderService.getOrderDTOList();
+            orderDTOS = orderService.getOrderDTOList(false);
         } else if (status.equals("OK")) {
             orderDTOS = orderService.getOrderDTOList(OrderStatus.PREPARING_ITEM);
         } else if (status.equals("CANCEL")) {
-            orderDTOS = orderService.getOrderDTOList(OrderStatus.ADMIN_ITEM_CHECK);
+            orderDTOS = orderService.getOrderDTOList(true);
         }else {
             return ResponseEntity.status(404).body("FAIL");
         }
