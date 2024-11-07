@@ -126,7 +126,7 @@ public class OrderServiceImpl implements OrderService {
                 .deliveryName(order.getAddress().getNickname())
                 .fullAddressName("우편번호 : " + order.getAddress().getZipcode() + " |" + order.getAddress().getAddressName() + " " + order.getAddress().getAddressNameDetail())
                 .totalAndDeliveryPrice(String.format("%,d", totalPrice + delivery) + "원")
-                .totalPrice(String.format("%,d", totalPrice))
+                .totalPrice(String.format("%,d", totalPrice) + "원")
                 .deliveryPrice(String.format("%,d", delivery) + "원")
                 .phoneNumber(phoneNumber)
                 .build();

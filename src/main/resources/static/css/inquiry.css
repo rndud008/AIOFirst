@@ -1,0 +1,169 @@
+#inquiryManagement{
+    display: flex;
+    justify-content: center;
+}
+
+#inquiryManagement button{
+    margin-right: 10px;
+    cursor: pointer;
+    width: 150px;
+    background-color: white;
+    height: 30px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+#inquiryHeader {
+    display: flex;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    margin-top: 10px;
+}
+
+#inquiryHeader > div{
+    padding: 5px 0 5px 3px;
+}
+
+.inquiryId{
+    width: 30px;
+    border-right: 1px solid lightgray;
+}
+.inquiryCategoryName{
+    width: 100px;
+    border-right: 1px solid lightgray;
+}
+.inquiryName{
+    width: 250px;
+    border-right: 1px solid lightgray;
+}
+.inquiryCreatedAt{
+    width: 150px;
+    border-right: 1px solid lightgray;
+}
+.inquiryUserNickname{
+    width: 100px;
+    border-right: 1px solid lightgray;
+}
+.inquiryAnswer{
+    width: 100px;
+}
+
+.inquiryItem{
+    display: flex;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.inquiryItem > div{
+    padding: 5px 0 5px 3px;
+
+}
+
+#inquiryDetail{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin: 20px auto 0 auto;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3), 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+}
+
+#inquiryDetail h2{
+    text-align: center;
+}
+
+#inquiryDetail > div{
+    display: flex;
+    flex-direction: column;
+}
+
+#inquiryDetail > div:last-child{
+    flex-direction: row;
+    justify-content: end;
+}
+
+#inquiryDetail > div > div {
+    display: flex;
+    margin-bottom: 5px;
+}
+
+#inquiryDetail label{
+    width: 100px;
+}
+
+#inquiryDetail button{
+    width: 100px;
+    border: none;
+    background-color: #414b5a;
+    border-radius: 10px;
+    color: white;
+    height: 25px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+#inquiryDetail textarea{
+    width: 280px;
+    height: 200px;
+}
+
+#inquiryModifyForm {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin: 20px auto 0 auto;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3), 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+}
+
+#inquiryModifyForm h2{
+    text-align: center;
+}
+
+#inquiryModifyForm > div {
+    display: flex;
+    flex-direction: column;
+}
+
+#inquiryModifyForm > div:last-child{
+    flex-direction: row;
+    justify-content: end;
+}
+
+#inquiryModifyForm > div > div{
+    display: flex;
+    margin-bottom: 5px;
+}
+#inquiryModifyForm label {
+    width: 100px;
+}
+
+#inquiryModifyForm button{
+    width: 100px;
+    border: none;
+    background-color: #414b5a;
+    border-radius: 10px;
+    color: white;
+    height: 25px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+#inquiryModifyForm textarea{
+    width: 280px;
+    height: 200px;
+}

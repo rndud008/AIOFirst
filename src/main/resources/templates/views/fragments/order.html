@@ -6,71 +6,77 @@
 </head>
 <body>
 
-<div th:fragment="orderManagement">
-    orderManagement
-    <div style="display: flex; justify-content: space-around">
+<th:block th:fragment="orderManagement">
+    <div id="orderManagement" style="display: flex; justify-content: space-around">
         <button onclick="getOrderList()">전체 주문내역</button>
         <button onclick="getOrderList('OK')">미확인 주문내역</button>
         <button onclick="getOrderList('CANCEL')">취소요청 주문내역</button>
     </div>
+
     <div>
-        <div style="display: flex; padding: 10px">
-            <div>#</div>
-            <div>상품이름</div>
-            <div>총금액</div>
-            <div>주문상태</div>
-            <div>주문일</div>
-            <div>주문상태 변경처리</div>
+        <div id="ordersHeader">
+            <div class="orderIndex">#</div>
+            <div class="orderProductName">상품이름</div>
+            <div class="orderTotal">총금액</div>
+            <div class="orderStatus">주문상태</div>
+            <div class="orderDate">주문일</div>
+            <div class="orderAction">주문상태 확인</div>
         </div>
         <div id="orders">
-            <div style="display: flex; padding: 10px" th:each="order : ${orders}">
+            <div class="orderItem" th:each="order : ${orders}">
                 <input type="hidden" th:value="${order.orderId}">
-                <div><span th:text="${order.index}">index</span></div>
-                <div>
-                    <a style="display: flex; flex-direction: column" th:href="@{'/admin/orders/detail/' + ${order.orderId}}">
+                <div class="orderIndex"><span th:text="${order.index}">index</span></div>
+                <div class="orderProductName">
+                    <a th:href="@{'/admin/orders/detail/' + ${order.orderId}}">
                         <span th:each="orderItem: ${order.orderItemDTOS}">
-                            <span  th:text="${orderItem.productName}"></span>
-                            <span  th:text="${orderItem.option}"></span>
+                            <span th:text="${orderItem.productName}"></span>
+                            <span th:text="${orderItem.option}"></span>
                         </span>
                     </a>
                 </div>
-                <div><span th:text="${order.totalPrice}">총금액</span></div>
-                <div><span id="orderStatus" th:text="${order.status}">주문상태</span></div>
-                <div><span th:text="${order.createdAt}">주문일</span></div>
-                <div>
+                <div class="orderTotal"><span th:text="${order.totalPrice}">총금액</span></div>
+                <div class="orderStatus"><span id="orderStatus" th:text="${order.status}">주문상태</span></div>
+                <div class="orderDate"><span th:text="${order.createdAt}">주문일</span></div>
+                <div class="orderAction">
                     <button th:if="${order.itemPending}" onclick="orderStatusChange(this,'OK')">주문확인</button>
                     <button th:if="${order.adminCheck}" onclick="orderStatusChange(this,'CANCEL')">주문취소</button>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</th:block>
 
-<div th:fragment="orderDetail">
-    orderDetail
-    <div>
+<th:block th:fragment="orderDetail">
+
+    <div id="orderDetail">
+        <h2>주문상세내역</h2>
         <div>
-            <div><span th:text="${orderDetail.orderDate}"></span></div>
-            <div><span th:text="${orderDetail.orderId}"></span></div>
+            <div><label>주문일</label><span th:text="${orderDetail.orderDate}"></span></div>
+            <div><label>주문번호</label><span th:text="${orderDetail.orderId}"></span></div>
         </div>
         <div th:each="proudct : ${orderDetail.orderDetailProductDTOS}">
             <div><span th:text="${proudct.productName}"></span></div>
-            <div><span th:text="${proudct.option}"></span></div>
-        </div>
-            <div><span th:text="${orderDetail.orderStatus}"></span></div>
-        <div>
-            <div><span th:text="${orderDetail.deliveryName}"></span></div>
-            <div><span th:text="${orderDetail.phoneNumber}"></span></div>
-            <div><span th:text="${orderDetail.fullAddressName}"></span></div>
+            <div><label>옵션</label><span th:text="${proudct.option}"></span></div>
         </div>
         <div>
-            <div><span th:text="${orderDetail.totalAndDeliveryPrice}"></span></div>
-            <div><span th:text="${orderDetail.totalPrice}"></span></div>
-            <div><span th:text="${orderDetail.deliveryPrice}"></span></div>
+            <div><label>주문상태</label><span th:text="${orderDetail.orderStatus}"></span></div>
+        </div>
+        <div>
+            <div><label>배송자 이름</label><span th:text="${orderDetail.deliveryName}"></span></div>
+            <div><label>연락처</label><span th:text="${orderDetail.phoneNumber}"></span></div>
+            <div><label>주소</label><span th:text="${orderDetail.fullAddressName}"></span></div>
+        </div>
+        <div>
+            <div><label>총 합계금액</label><span th:text="${orderDetail.totalAndDeliveryPrice}"></span></div>
+            <div><label>총 금액</label><span th:text="${orderDetail.totalPrice}"></span></div>
+            <div><label>배송비</label><span th:text="${orderDetail.deliveryPrice}"></span></div>
+        </div>
+        <div>
+            <button onclick="historyBack()">이전으로</button>
         </div>
     </div>
 
-</div>
+</th:block>
 
 </body>
 </html>

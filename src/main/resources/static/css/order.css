@@ -1,0 +1,147 @@
+#orderManagement{
+    display: flex;
+    justify-content: center;
+}
+
+#orderManagement button{
+    margin-right: 10px;
+    cursor: pointer;
+    width: 150px;
+    background-color: white;
+    height: 30px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+#ordersHeader {
+    display: flex;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    margin-top: 10px;
+}
+
+#ordersHeader > div{
+    padding: 5px 0 5px 3px;
+}
+
+.orderIndex{
+    width: 30px;
+    border-right: 1px solid lightgray;
+}
+
+.orderProductName{
+    width: 300px;
+    border-right: 1px solid lightgray;
+}
+.orderProductName > a{
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: black;
+}
+
+.orderProductName > a > span {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-wrap: nowrap;
+}
+
+.orderTotal{
+    width: 100px;
+    border-right: 1px solid lightgray;
+}
+
+.orderStatus{
+    width: 100px;
+    border-right: 1px solid lightgray;
+}
+
+.orderDate{
+    width: 100px;
+    border-right: 1px solid lightgray;
+}
+
+.orderAction{
+    width: 100px;
+    text-wrap: nowrap;
+}
+
+.orderItem {
+    display: flex;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.orderItem > div{
+    padding: 5px 0 5px 3px;
+}
+
+#orderDetail{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    margin: 20px auto 0 auto;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3), 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+}
+
+#orderDetail h2{
+    text-align: center;
+}
+
+#orderDetail > div{
+    margin-bottom: 10px;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+#orderDetail > div > div{
+    display: flex;
+    margin-bottom: 5px;
+}
+
+#orderDetail > div > div > span{
+    width: 400px;
+}
+
+#orderDetail label{
+    width: 100px;
+    border-right: 1px solid lightgray;
+}
+
+#orderDetail button{
+    border: none;
+    background-color: #414b5a;
+    border-radius: 10px;
+    color: white;
+    margin-left: 10px;
+    width: 100px;
+    height: 30px;
+    cursor: pointer;
+
+}
+
+#orderDetail > div:last-child{
+    align-items: end;
+}
+
+#orderDetail > div >div >span{
+    margin-left: 5px;
+}
+
+

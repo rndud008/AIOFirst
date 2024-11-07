@@ -9,75 +9,95 @@
 </head>
 <body>
 
-<div th:fragment="productManagement">
-    productManageMent
-    <div style="display: flex; justify-content: space-around">
-        <div onclick="productSaveForm()">생성</div>
-        <div onclick="productSearch()">조희</div>
+<th:block th:fragment="productManagement">
+    <div id="productManagement">
+        <div onclick="productSaveForm()">상품 생성</div>
+        <div onclick="productSearch()">상품 조희</div>
     </div>
+</th:block>
 
-</div>
-
-<div th:fragment="productSaveForm">
-    상품 생성
-    <form style="display: flex; flex-direction: column" id="productSave" th:object="${productDTO}"
+<th:block th:fragment="productSaveForm">
+    <form id="productSave" th:object="${productDTO}"
           enctype="multipart/form-data">
-        <label for="productName">상품 이름</label>
-        <input type="text" id="productName" th:field="*{productName}" placeholder="상품명을 입력해주세요."/>
-        <label for="productImgs">상품이미지</label>
-        <input type="file" multiple id="productImgs" th:field="*{productImgs}"/>
-        <label for="productDescriptionImgs">상품 개요</label>
-        <input type="file" multiple id="productDescriptionImgs" th:field="*{productDescriptionImgs}"/>
-        <label for="size">상품 사이즈</label>
-        <input type="text" id="size" th:field="*{size}" placeholder="ex) L, M, XL ,..."/>
-        <label for="color">상품 색상</label>
-        <input type="text" id="color" th:field="*{color}" placeholder="ex) 빨강, red, blue ,..."/>
-        <label for="stockQuantity">재고량</label>
-        <input type="number" id="stockQuantity" th:field="*{stockQuantity}" placeholder="초기 수량을 입력해 주세요."/>
-        <label for="consumerPrice">소비자가</label>
-        <input type="number" id="consumerPrice" th:field="*{consumerPrice}"/>
-        <label for="sellPrice">판매가</label>
-        <input type="number" id="sellPrice" th:field="*{sellPrice}"/>
-        <label for="category">카테고리</label>
-        <select id="category" th:field="*{categoryDTO.id}">
-            <option th:each="category: ${categoryList}"
-                    th:value="${category?.id}"
-                    th:text="${category?.categoryName}"
-            ></option>
-        </select>
+        <h2>상품 생성</h2>
         <div>
-            <th:block th:each="productStatus : ${productStatuses}">
-                <label th:for="${productStatus}" th:text="${productStatus}">SELL</label>
-                <input type="checkbox" th:id="${productStatus}" th:field="*{productStatuses}"
-                       th:value="${productStatus}">
-            </th:block>
+            <label class="productLabel" for="productName">상품 이름</label>
+            <input type="text" id="productName" th:field="*{productName}" placeholder="상품명을 입력해주세요."/>
         </div>
-
+        <div>
+            <label class="productLabel" for="productImgs">상품 이미지</label>
+            <input type="file" multiple id="productImgs" th:field="*{productImgs}"/>
+        </div>
+        <div>
+            <label class="productLabel" for="productDescriptionImgs">상품 개요</label>
+            <input type="file" multiple id="productDescriptionImgs" th:field="*{productDescriptionImgs}"/>
+        </div>
+        <div>
+            <label class="productLabel" for="size">상품 사이즈</label>
+            <input type="text" id="size" th:field="*{size}" placeholder="ex) L, M, XL ,..."/>
+        </div>
+        <div>
+            <label class="productLabel" for="color">상품 색상</label>
+            <input type="text" id="color" th:field="*{color}" placeholder="ex) 빨강, red, blue ,..."/>
+        </div>
+        <div>
+            <label class="productLabel" for="stockQuantity">재고량</label>
+            <input type="number" id="stockQuantity" th:field="*{stockQuantity}" placeholder="초기 수량을 입력해 주세요."/>
+        </div>
+        <div>
+            <label class="productLabel" for="consumerPrice">소비자가</label>
+            <input type="number" id="consumerPrice" th:field="*{consumerPrice}"/>
+        </div>
+        <div>
+            <label class="productLabel" for="sellPrice">판매가</label>
+            <input type="number" id="sellPrice" th:field="*{sellPrice}"/>
+        </div>
+        <div>
+            <label class="productLabel" for="category">카테고리</label>
+            <select id="category" th:field="*{categoryDTO.id}">
+                <option th:each="category: ${categoryList}"
+                        th:value="${category?.id}"
+                        th:text="${category?.categoryName}"
+                ></option>
+            </select>
+        </div>
+        <div id="productStatusDiv">
+            <label class="productLabel">상품판매상태</label>
+            <div class="productStatus">
+                <div th:each="productStatus : ${productStatuses}">
+                    <label th:for="${productStatus}" th:text="${productStatus}">SELL</label>
+                    <input type="checkbox" th:id="${productStatus}" th:field="*{productStatuses}"
+                           th:value="${productStatus}">
+                </div>
+            </div>
+        </div>
 
         <button id="saveButton" type="button" onclick="productSave()">상품 저장</button>
 
     </form>
-</div>
+</th:block>
 
-<div th:fragment="productSearch">
-    <div>
+<th:block th:fragment="productSearch">
+    <div class="productSearch">
         <button th:each="category: ${categoryDTOS}" type="button"
                 th:text="${category.categoryName}" th:value="${category.id}"
                 th:onclick="|productSearchList(${category.id})|"></button>
     </div>
+</th:block>
 
-</div>
+<th:block th:fragment="productSearchAllResult">
+    <div class="productSearch">
+        <button type="button" th:each="subCategory : ${subCategoryDTOS}"
+                th:text="${subCategory.categoryName}" th:value="${subCategory.id}"
+                th:onclick="|productSearchList(${subCategory.depNo}, ${subCategory.id})|"></button>
+    </div>
 
-<div th:fragment="productSearchAllResult">
-    <button type="button" th:each="subCategory : ${subCategoryDTOS}"
-            th:text="${subCategory.categoryName}" th:value="${subCategory.id}"
-            th:onclick="|productSearchList(${subCategory.depNo}, ${subCategory.id})|"></button>
-    <div style="display: flex" th:each="product : ${productDTOS.dtoList}">
+    <div class="productSearchAllResult" th:each="product : ${productDTOS.dtoList}">
         <div>
             <img th:src="@{${product.productImgFileNames[0]}}"/>
         </div>
         <div style="display: flex; flex-direction: column">
-            <span>상품이름 :<span th:text="${product.productName}"></span></span>
+            <span>상품이름 : <span th:text="${product.productName}"></span></span>
             <span>상품소비자가 : <span th:text="${product.consumerPrice}"></span></span>
             <span>상품판매가 : <span th:text="${product.sellPrice}"></span></span>
             <span>사이즈 종류: <span th:text="${product.size}"></span></span>
@@ -88,116 +108,155 @@
             <button th:onclick="|productVariantForm(${product.id})|">옵션 수정</button>
         </div>
     </div>
-    <button type="button" th:if="${productDTOS.prev}"
-            th:onclick="|productSearchList(null, null,${productDTOS.prevPage})|"></button>
-    <button th:each="page : ${productDTOS.pageNumberList}" th:text="${page}" type="button"
-            th:onclick="|productSearchList(null, null,${page})|"></button>
-    <button type="button" th:if="${productDTOS.next}"
-            th:onclick="|productSearchList(null, null,${productDTOS.nextPage})|"></button>
+    <div class="productSearchButton">
+        <button type="button" th:if="${productDTOS.prev}"
+                th:onclick="|productSearchList(null, null,${productDTOS.prevPage})|"></button>
+        <button th:each="page : ${productDTOS.pageNumberList}" th:text="${page}" type="button"
+                th:onclick="|productSearchList(null, null,${page})|"></button>
+        <button type="button" th:if="${productDTOS.next}"
+                th:onclick="|productSearchList(null, null,${productDTOS.nextPage})|"></button>
+    </div>
 
-</div>
+</th:block>
 
-<div th:fragment="productModifyForm">
-    상품 수정
+<th:block th:fragment="productModifyForm">
     <form style="display: flex; flex-direction: column" id="productModify" th:object="${productDTO}"
           enctype="multipart/form-data">
-        <label for="productName">상품 이름</label>
-        <input type="text" id="productName" th:field="*{productName}" placeholder="상품명을 입력해주세요."/>
-        <label for="productImgs">상품이미지</label>
-        <input type="file" multiple id="productImgs" th:field="*{productImgs}"/>
-        <label for="productDescriptionImgs">상품 개요</label>
-        <input type="file" multiple id="productDescriptionImgs" th:field="*{productDescriptionImgs}"/>
-        <label for="size">상품 사이즈</label>
-        <input type="text" id="size" th:field="*{size}" placeholder="ex) L, M, XL ,..." readonly/>
-        <label for="color">상품 색상</label>
-        <input type="text" id="color" th:field="*{color}" placeholder="ex) 빨강, red, blue ,..." readonly/>
-        <label for="stockQuantity">재고량</label>
-        <input type="number" id="stockQuantity" th:field="*{stockQuantity}" placeholder="초기 수량을 입력해 주세요." readonly/>
-        <label for="consumerPrice">소비자가</label>
-        <input type="number" id="consumerPrice" th:field="*{consumerPrice}"/>
-        <label for="sellPrice">판매가</label>
-        <input type="number" id="sellPrice" th:field="*{sellPrice}"/>
-        <label for="category">카테고리</label>
-        <select id="category" th:field="*{categoryDTO.id}">
-            <option th:each="category: ${categoryList}"
-                    th:value="${category?.id}"
-                    th:text="${category?.categoryName}"
-            ></option>
-        </select>
+        <h2>상품 수정</h2>
         <div>
-            <th:block th:each="productStatus : ${productStatuses}">
-                <label th:for="${productStatus}" th:text="${productStatus}">SELL</label>
-                <input type="checkbox" th:id="${productStatus}" th:field="*{productStatuses}"
-                       th:value="${productStatus}">
-            </th:block>
+            <label class="productLabel" for="productName">상품 이름</label>
+            <input type="text" id="productName" th:field="*{productName}" placeholder="상품명을 입력해주세요."/>
+        </div>
+        <div>
+            <label class="productLabel" for="productImgs">상품이미지</label>
+            <input type="file" multiple id="productImgs" th:field="*{productImgs}"/>
+        </div>
+        <div>
+            <label class="productLabel" for="productDescriptionImgs">상품 개요</label>
+            <input type="file" multiple id="productDescriptionImgs" th:field="*{productDescriptionImgs}"/>
+        </div>
+        <div>
+            <label class="productLabel" for="size">상품 사이즈</label>
+            <input type="text" id="size" th:field="*{size}" placeholder="ex) L, M, XL ,..." readonly/>
+        </div>
+        <div>
+            <label class="productLabel" for="color">상품 색상</label>
+            <input type="text" id="color" th:field="*{color}" placeholder="ex) 빨강, red, blue ,..." readonly/>
+        </div>
+        <div>
+            <label class="productLabel" for="stockQuantity">재고량</label>
+            <input type="number" id="stockQuantity" th:field="*{stockQuantity}" placeholder="초기 수량을 입력해 주세요." readonly/>
+        </div>
+        <div>
+            <label class="productLabel" for="consumerPrice">소비자가</label>
+            <input type="number" id="consumerPrice" th:field="*{consumerPrice}"/>
+        </div>
+        <div>
+            <label class="productLabel" for="sellPrice">판매가</label>
+            <input type="number" id="sellPrice" th:field="*{sellPrice}"/>
+        </div>
+        <div>
+            <label class="productLabel" for="category">카테고리</label>
+            <select id="category" th:field="*{categoryDTO.id}">
+                <option th:each="category: ${categoryList}"
+                        th:value="${category?.id}"
+                        th:text="${category?.categoryName}"
+                ></option>
+            </select>
+        </div>
+        <div>
+            <label class="productLabel">상품판매상태</label>
+            <div class="productStatus">
+                <div th:each="productStatus : ${productStatuses}">
+                    <label th:for="${productStatus}" th:text="${productStatus}">SELL</label>
+                    <input type="checkbox" th:id="${productStatus}" th:field="*{productStatuses}"
+                           th:value="${productStatus}">
+                </div>
+            </div>
         </div>
 
-        <span>저장된 상품이미지 (체크해제시 이미지가 삭제됩니다.)</span>
-        <div>
-            <th:block th:each=" productImgFileName : ${productDTO.productImgFileNames}">
-                <label th:for="${productImgFileName}" th:text="${productImgFileName}"></label>
+        <div class="saveImg">
+            <label>저장된 상품이미지 (체크해제시 이미지 삭제)</label>
+            <div th:each=" productImgFileName : ${productDTO.productImgFileNames}">
+                <label th:for="${productImgFileName}"><img width="100px" th:src="${productImgFileName}"/></label>
                 <input type="checkbox" th:id="${productImgFileName}" th:field="*{productImgFileNames}"
                        th:value="${productImgFileName}"/>
-            </th:block>
+            </div>
         </div>
 
-        <span>저장된 상품 개요 이미지 (체크해제시 이미지가 삭제됩니다.)</span>
-        <div>
-            <th:block th:each=" productDescriptionImgFileName : ${productDTO.productDescriptionImgFileNames}">
-                <label th:for="${productDescriptionImgFileName}" th:text="${productDescriptionImgFileName}"></label>
+        <div class="saveImg">
+            <label>저장된 상품 개요 이미지 (체크해제시 이미지 삭제)</label>
+            <div th:each=" productDescriptionImgFileName : ${productDTO.productDescriptionImgFileNames}">
+                <label th:for="${productDescriptionImgFileName}"><img width="100px"
+                                                                      th:src="${productDescriptionImgFileName}"/></label>
                 <input type="checkbox" th:id="${productDescriptionImgFileName}"
-                       th:field="*{productDescriptionImgFileNames}"
-                       th:value="${productDescriptionImgFileName}"/>
-            </th:block>
+                       th:field="*{productDescriptionImgFileNames}" th:value="${productDescriptionImgFileName}"/>
+            </div>
         </div>
 
         <button id="modifyButton" type="button" th:onclick="|productModify(${productDTO.id})|">상품 수정</button>
     </form>
-</div>
+</th:block>
 
-<div th:fragment="productVariantForm">
-    상품 옵션 수정
+<th:block th:fragment="productVariantForm">
     <form style="display: flex; flex-direction: column" id="productVariantForm" th:object="${productVariantListDTO}"
           enctype="multipart/form-data">
 
-        <input type="hidden" id="productId" th:field="*{existingVariants[0].productId}"/>
-        <span>상품 이름 : <span id="productName" th:text="${productVariantListDTO.existingVariants[0].productName}" th:field="*{existingVariants[0].productName}" /></span>
+        <h2>상품 옵션 변경</h2>
+        <div>
+            <input type="hidden" id="productId" th:field="*{existingVariants[0].productId}"/>
+            <span>상품 이름 : <span id="productName" th:text="${productVariantListDTO.existingVariants[0].productName}"
+                                th:field="*{existingVariants[0].productName}"/></span>
+            <button type="button" onclick="newVariantItemCreate()">상품 추가</button>
+        </div>
 
         <div>
-            <button type="button" onclick="newVariantItemCreate()">상품 추가</button>
-            <div th:each="productVariant, idx : ${productVariantListDTO.existingVariants}" class="exist-variant-item" th:id="'item-'+${productVariant.productVariantId}" >
-                    <input type="hidden" th:field="*{existingVariants[__${idx.index}__].productVariantId}"/>
-                    <label style="width: 100px" th:for="'size-' + ${idx.index}">상품 사이즈</label>
-                    <input style="width: 100px" type="text" th:id="'size-' + ${idx.index}" th:field="*{existingVariants[__${idx.index}__].size}" placeholder="ex) L, M, XL ,..."/>
-                    <label th:for="'color-'+${idx.index}">상품 색상</label>
-                    <input style="width: 100px" type="text" th:id="'color-'+${idx.index}" th:field="*{existingVariants[__${idx.index}__].color}" placeholder="ex) 빨강, red, blue ,..."/>
-                    <label th:for="'stockQuantity-'+${idx.index}">재고량</label>
-                    <input style="width: 100px" type="number" th:id="'stockQuantity-'+${idx.index}" th:field="*{existingVariants[__${idx.index}__].stockQuantity}"
-                           placeholder="수량을 입력해 주세요."/>
-                    <label th:for="'price-'+${idx.index}">추가 금액</label>
-                    <input style="width: 100px" type="number" th:id="'price-'+${idx.index}" th:field="*{existingVariants[__${idx.index}__].price}"/>
-                    <button type="button" th:onclick="|existVariantItemRemove('item-${productVariant.productVariantId}')|">삭제</button>
+            <div th:each="productVariant, idx : ${productVariantListDTO.existingVariants}" class="exist-variant-item"
+                 th:id="'item-'+${productVariant.productVariantId}">
+                <input type="hidden" th:field="*{existingVariants[__${idx.index}__].productVariantId}"/>
+                <label  th:for="'size-' + ${idx.index}">상품 사이즈</label>
+                <input  type="text" th:id="'size-' + ${idx.index}"
+                       th:field="*{existingVariants[__${idx.index}__].size}" placeholder="ex) L, M, XL ,..."/>
+                <label th:for="'color-'+${idx.index}">상품 색상</label>
+                <input type="text" th:id="'color-'+${idx.index}"
+                       th:field="*{existingVariants[__${idx.index}__].color}" placeholder="ex) 빨강, red, blue ,..."/>
+                <label th:for="'stockQuantity-'+${idx.index}">재고량</label>
+                <input type="number" th:id="'stockQuantity-'+${idx.index}"
+                       th:field="*{existingVariants[__${idx.index}__].stockQuantity}"
+                       placeholder="수량을 입력해 주세요."/>
+                <label th:for="'price-'+${idx.index}">추가 금액</label>
+                <input type="number" th:id="'price-'+${idx.index}"
+                       th:field="*{existingVariants[__${idx.index}__].price}"/>
+                <button type="button" th:onclick="|existVariantItemRemove('item-${productVariant.productVariantId}')|">
+                    삭제
+                </button>
             </div>
 
-            <div th:each="productVariant, idx : ${productVariantListDTO.newVariants}" th:object="${productVariant}" class="new-variant-item">
-                    <label th:for="'newSize-'+${idx.index}">상품 사이즈</label>
-                    <input style="width: 100px" type="text" th:id="'newSize-'+${idx.index}" th:field="*{newVariants[__${idx.index}__].size}" placeholder="ex) L, M, XL ,..."/>
-                    <label th:for="'newColor-'+${idx.index}">상품 색상</label>
-                    <input style="width: 100px" type="text" th:id="'newColor-'+${idx.index}" th:field="*{newVariants[__${idx.index}__].color}"
-                           placeholder="ex) 빨강, red, blue ,..."/>
-                    <label th:for="'newStockQuantity-'+${idx.index}">재고량</label>
-                    <input style="width: 100px" type="number" th:id="'newStockQuantity-'+${idx.index}" th:field="*{newVariants[__${idx.index}__].stockQuantity}"
-                           placeholder="초기 수량을 입력해 주세요."/>
-                    <label th:for="'newPrice-'+${idx.index}">추가 금액</label>
-                    <input style="width: 100px" type="number" th:id="'newPrice-'+${idx.index}" th:field="*{newVariants[__${idx.index}__].price}"/>
-                    <button type="button">삭제</button>
+            <div th:each="productVariant, idx : ${productVariantListDTO.newVariants}" th:object="${productVariant}"
+                 class="new-variant-item">
+                <label th:for="'newSize-'+${idx.index}">상품 사이즈</label>
+                <input style="width: 100px" type="text" th:id="'newSize-'+${idx.index}"
+                       th:field="*{newVariants[__${idx.index}__].size}" placeholder="ex) L, M, XL ,..."/>
+                <label th:for="'newColor-'+${idx.index}">상품 색상</label>
+                <input style="width: 100px" type="text" th:id="'newColor-'+${idx.index}"
+                       th:field="*{newVariants[__${idx.index}__].color}"
+                       placeholder="ex) 빨강, red, blue ,..."/>
+                <label th:for="'newStockQuantity-'+${idx.index}">재고량</label>
+                <input style="width: 100px" type="number" th:id="'newStockQuantity-'+${idx.index}"
+                       th:field="*{newVariants[__${idx.index}__].stockQuantity}"
+                       placeholder="초기 수량을 입력해 주세요."/>
+                <label th:for="'newPrice-'+${idx.index}">추가 금액</label>
+                <input style="width: 100px" type="number" th:id="'newPrice-'+${idx.index}"
+                       th:field="*{newVariants[__${idx.index}__].price}"/>
+                <button type="button">삭제</button>
             </div>
         </div>
 
-        <button id="variantModifyButton" type="button" th:onclick="|productVariantModify(${productVariantListDTO.existingVariants[0].productId})|">상품 옵션 수정
+        <button id="variantModifyButton" type="button"
+                th:onclick="|productVariantModify(${productVariantListDTO.existingVariants[0].productId})|">상품 옵션 수정
         </button>
     </form>
-</div>
+</th:block>
 
 </body>
 </html>

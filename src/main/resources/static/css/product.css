@@ -1,0 +1,176 @@
+#productManagement{
+    display: flex;
+    justify-content: center;
+}
+
+#productManagement div{
+    margin-right: 10px;
+    cursor: pointer;
+    width: 100px;
+    background-color: white;
+    height: 30px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+#productSave ,
+#productModify {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin: 20px auto 0 auto;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3), 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+}
+
+#productSave > div,
+#productModify > div {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+#productSave h2,
+#productModify h2{
+    text-align: center;
+}
+
+#productSave button,
+#productModify button{
+    width: 400px;
+    border: none;
+    background-color: #414b5a;
+    border-radius: 10px;
+    color: white;
+    height: 25px;
+    cursor: pointer;
+    align-items: center;
+}
+
+#productSave input[type="text"] ,
+#productSave input[type="number"],
+#productModify input[type="text"] ,
+#productModify input[type="number"] {
+    width: 300px;
+    height: 30px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+#productModify input[readonly]{
+    background-color: lightgray;
+}
+
+#productSave select,
+#productModify select {
+    width: 300px;
+    height: 30px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+.productLabel{
+    width: 100px;
+}
+
+.productStatus{
+    width: 300px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.saveImg{
+    flex-direction: column;
+}
+.saveImg >div{
+    display: flex;
+}
+
+.productSearch button{
+    border: none;
+    background-color: white;
+    margin-left: 10px;
+    height: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.productSearchAllResult {
+    display: flex;
+    margin-top: 10px;
+    background-color: white;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3), 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.productSearchAllResult img{
+    width: 100px;
+}
+
+.productSearchAllResult button{
+    border: none;
+    background-color: #414b5a;
+    border-radius: 10px;
+    color: white;
+    margin-left: 10px;
+    width: 80px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.productSearchAllResult > div:nth-child(2) {
+    padding-left: 10px;
+}
+
+.productSearchButton{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+#productVariantForm {
+    display: flex;
+    flex-direction: column;
+    width: 700px;
+    margin: 20px auto 0 auto;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3), 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+}
+
+#productVariantForm h2{
+    text-align: center;
+}
+
+#productVariantForm input[type="text"],
+#productVariantForm input[type="number"]{
+    width: 70px;
+    height: 30px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+#productVariantForm button{
+    border: none;
+    background-color: #414b5a;
+    border-radius: 10px;
+    color: white;
+    height: 30px;
+    cursor: pointer;
+
+}
+
+#productVariantForm > button{
+    margin-top: 10px;
+}
+
+#productVariantForm > div {
+    margin-top: 10px;
+}
+

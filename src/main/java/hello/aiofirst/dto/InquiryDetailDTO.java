@@ -13,6 +13,7 @@ public class InquiryDetailDTO {
     private Long inquiryId;
     private Long categoryId;
 
+    private String categoryName;
     private String username;
     private String content;
     private String title;
