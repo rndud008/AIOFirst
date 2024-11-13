@@ -10,6 +10,8 @@ import hello.aiofirst.util.JWTUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,10 +38,13 @@ public class IndexController {
 
     }
     @GetMapping("/loginPage")
-    public String loginPage(Model model){
+    public String loginPage(Model model, @AuthenticationPrincipal UserDetails userDetails){
 
-        model.addAttribute("adminLgoinDTO",new LoginRequestDTO());
-        return "views/loginPage";
+        if (userDetails == null){
+            model.addAttribute("adminLgoinDTO",new LoginRequestDTO());
+            return "views/loginPage";
+        }
+        return "views/layout";
     }
 
     @PostMapping("/join")

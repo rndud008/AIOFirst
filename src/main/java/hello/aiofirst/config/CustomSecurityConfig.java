@@ -51,8 +51,8 @@ public class CustomSecurityConfig {
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/loginPage").permitAll()
-                        .requestMatchers( "/js/**").permitAll()
-                        .requestMatchers("/login","/refresh","/join").permitAll()
+                        .requestMatchers("/js/**", "/css/**").permitAll()
+                        .requestMatchers("/login", "/refresh", "/join").permitAll()
                         .requestMatchers("/admin/**", "/").hasRole("ADMIN").anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/loginPage")

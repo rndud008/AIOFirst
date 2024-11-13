@@ -3,45 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="/css/loginPage.css">
 </head>
 <body>
-    <div style="width: 500px; height: 500px; outline: auto" >
-        <form method="post" id="loginForm" th:object="${adminLgoinDTO}">
-            <label for="username">id:</label>
+<div>
+    <form method="post" id="loginForm" th:object="${adminLgoinDTO}">
+        <h2>ADMIN LOGIN</h2>
+        <div>
+            <label for="username">id</label>
             <input type="text" id="username" th:field="*{username}"/>
-            <label for="password">password:</label>
+        </div>
+        <div>
+            <label for="password">password</label>
             <input type="password" id="password" th:field="*{password}"/>
+        </div>
+        <div>
             <button type="button" onclick="login()">LogIn</button>
-        </form>
-
-        <button type="button" onclick="check()"> check</button>
-    </div>
+        </div>
+    </form>
+</div>
 </body>
 
 <script>
-    const login = async () =>{
+    const login = async () => {
 
         const data = new FormData(document.getElementById('loginForm'))
 
-        const response = await fetch(`/login`,{
-            method:'post',
+        const response = await fetch(`/login`, {
+            method: 'post',
             body: data
         })
 
-        if(!response.ok){
+        if (!response.ok) {
             alert('존재하지 않는 회원입니다.')
             return;
         }
 
-        const responseData =  await response.text();
-        localStorage.setItem('Authorization',responseData);
+        const responseData = await response.text();
+        localStorage.setItem('Authorization', responseData);
         alert('로그인 완료')
 
-        window.location.href='/'
+        window.location.href = '/'
 
     }
 
-    const check = () =>{
+    const check = () => {
         const auth = localStorage.getItem('Authorization')
         console.log(auth)
 
@@ -51,8 +57,6 @@
         const accessToken = json.accessToken;
         console.log(accessToken)
     }
-
-
 
 
 </script>

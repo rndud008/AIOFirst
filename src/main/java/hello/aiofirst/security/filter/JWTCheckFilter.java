@@ -86,15 +86,6 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
             } catch (Exception e) {
 
-//                Cookie[] cookies = request.getCookies();
-//                if(cookies != null){
-//                    for(Cookie cookie : cookies){
-//                        if (cookie.getName().equals("refreshToken")){
-//                            refreshToken = cookie.getValue();
-//                        }
-//                    }
-//                }
-
                 if (refreshToken != null){
                     try {
 
