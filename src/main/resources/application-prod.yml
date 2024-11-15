@@ -7,7 +7,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${rds.hostname}:${rds.port}/${rds.db.name}?useSSL=false&serverTimeZone=Asia/Seoul&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://${rds.hostname}:${rds.port}/${rds.database}?useSSL=false&serverTimeZone=Asia/Seoul&allowPublicKeyRetrieval=true
     username: ${rds.username}
     password: ${rds.password}
 
@@ -18,7 +18,7 @@ spring:
         format_sql: true
         default_batch_fetch_size: 1000
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
 
   profiles:
     include: dev
