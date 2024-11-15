@@ -20,9 +20,6 @@ spring:
     hibernate:
       ddl-auto: none
 
-  profiles:
-    include: dev
-
   servlet:
     multipart:
       max-request-size: 30MB
