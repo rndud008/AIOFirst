@@ -1,0 +1,58 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: AIOFirst
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${rds.hostname}:${rds.port}/${rds.db.name}?useSSL=false&serverTimeZone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: ${rds.username}
+    password: ${rds.password}
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 1000
+    hibernate:
+      ddl-auto: update
+
+  profiles:
+    include: dev
+
+  servlet:
+    multipart:
+      max-request-size: 30MB
+      max-file-size: 10MB
+  thymeleaf:
+    cache: false
+
+app:
+  upload:
+    path: upload
+
+jwt:
+  secret: ${rds.jwt}
+
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${rds.s3accesskey}
+      secret-key: ${rds.s3secretkey}
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    s3:
+      bucket: ${rds.s3bucket}
+
+kakaopay:
+  secretKey: ${rds.kakaopaysecretkey}
+  cid: ${rds.kakaopaycid}
+  readyUrl: https://open-api.kakaopay.com/online/v1/payment/ready
+  approveUrl: https://open-api.kakaopay.com/online/v1/payment/approve
+  refundUrl: https://open-api.kakaopay.com/online/v1/payment/cancel
