@@ -81,6 +81,10 @@ public class CategoryServiceImpl implements CategoryService {
         numberList.add(0);
         numberList.add(Math.toIntExact(category.getId()));
 
+        result = categoryRepository.findByCategoryName("고객센터");
+        category = result.orElseThrow();
+        numberList.add(Math.toIntExact(category.getId()));
+
         List<Category> categories = categoryRepository.getExcludeTopCategoryAndInquiry(numberList);
         List<CategoryDTO> categoryDTOS = getCategoryDTOS(categories);
 

@@ -41,9 +41,13 @@ public class IndexController {
     public String loginPage(Model model, @AuthenticationPrincipal UserDetails userDetails){
 
         if (userDetails == null){
-            model.addAttribute("adminLgoinDTO",new LoginRequestDTO());
+            LoginRequestDTO loginRequestDTO = new LoginRequestDTO();
+            loginRequestDTO.setUsername("admin");
+            loginRequestDTO.setPassword("1111");
+            model.addAttribute("adminLgoinDTO",loginRequestDTO);
             return "views/loginPage";
         }
+
         return "views/layout";
     }
 
