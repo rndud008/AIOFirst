@@ -157,14 +157,10 @@ public class OrderServiceImpl implements OrderService {
     public Order orderStatusChange(OrderRequestDTO orderRequestDTO) {
         Order order = orderRepository.findById(orderRequestDTO.getOrderId()).orElse(new Order());
 
-        if (order.getId() == null && !orderRequestDTO.getStatus().equals("OK") && !orderRequestDTO.getStatus().equals("CANCEL")) {
-            return order;
-        }
-
-        if (orderRequestDTO.getStatus().equals("OK")) {
-            order.changeStatus(OrderStatus.PREPARING_ITEM_CHECK);
-        } else if (orderRequestDTO.getStatus().equals("CANCEL")) {
-            order.changeStatus(OrderStatus.ORDER_CANCELED);
+        if (OrderStatus.PREPARING_ITEM.equals(OrderStatus.valueOf(orderRequestDTO.getStatus()))) {
+            order.changeStatus(OrderStatus.valueOf(orderRequestDTO.getStatus()));
+        } else {
+            order.changeStatus(OrderStatus.valueOf(orderRequestDTO.getStatus()));
             order.changeAdmin(false);
         }
 
@@ -175,6 +171,7 @@ public class OrderServiceImpl implements OrderService {
         if (total < 50000) {
             total += 3000;
         }
+        boolean adminCheck = order.isAdminCheck() || !OrderStatus.ORDER_CANCELED.equals(order.getOrderStatus()) && !OrderStatus.PREPARING_ITEM.equals(order.getOrderStatus());
 
         OrderDTO orderDTO = OrderDTO.builder()
                 .index(index)
@@ -183,7 +180,7 @@ public class OrderServiceImpl implements OrderService {
                 .totalPrice(String.format("%,d", total) + "원")
                 .createdAt(order.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .orderItemDTOS(orderItemDTOS)
-                .adminCheck(order.isAdminCheck())
+                .adminCheck(adminCheck)
                 .itemPending(order.getOrderStatus().name().equals(OrderStatus.PREPARING_ITEM.name()))
                 .build();
         return orderDTO;

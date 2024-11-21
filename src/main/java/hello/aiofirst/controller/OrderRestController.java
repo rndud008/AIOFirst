@@ -32,7 +32,7 @@ public class OrderRestController {
             return ResponseEntity.status(404).body("FAIL");
         }
 
-        if(orderRequestDTO.getStatus().equals("CANCEL")){
+        if(order.getOrderStatus().equals(OrderStatus.ORDER_CANCELED)){
             kakaoPayService.kakaoCancel(order);
         }
 

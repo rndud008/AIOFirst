@@ -93,166 +93,65 @@
 <script src="/js/api.js"></script>
 <script src="/js/category.js"></script>
 <script src="/js/product.js"></script>
+<script src="/js/order.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/inquiry.js"></script>
 
 <script>
-    const orderManage = () => {
-        window.location.href = '/admin/orders'
-    }
+   const orderStatusChangeModal = (button) =>{
+       const div = button.closest('div').parentNode;
+       const orderId = div.querySelector("input[type='hidden']").value;
 
-    const orderStatusChange = async (button, status = "") => {
+       const modal = document.createElement('div');
+       modal.setAttribute('id', 'modal')
+       modal.onclick = () => modalClose(event);
 
-        const div = button.closest('div').parentNode;
-        console.log(div)
+       modal.style.display = "block";
 
-        const orderId = div.querySelector("input[type='hidden']").value;
-        const item = {
-            orderId,
-            status
-        }
+       modal.innerHTML = `
+            <div class="modalContent">
+                <input type="hidden" value="${orderId}">
+                <div>
+                    <select>
+                        <option value="PREPARING_ITEM">상품주문완료</option>
+                        <option value="PREPARING_ITEM_CHECK">상품 준비중</option>
+                        <option value="DELIVERY_IN_PROGRESS">배송중</option>
+                        <option value="DELIVERY_COMPLETED">배송완료</option>
+                        <option value="ORDER_CANCELED">주문취소</option>
+                    </select>
+                </div>
+                <div>
+                    <button onclick="orderStatusChange(this)"> 등록</button>
+                    <button onclick="buttonModalClose()"> 취소</button>
+                </div>
+            </div>
+`
 
-        const response = await postJsonResponse(`/api/orders/status`, JSON.stringify(item))
+       div.insertAdjacentElement('afterend', modal)
 
-        const data = await response.text();
+   }
 
-        if (response.status === 200) {
+   const modalClose = (event) => {
 
-            div.querySelector('#orderStatus').textContent = data
-            button.remove()
-            alert("변경완료")
-        } else {
-            alert("잘못된요청입니다.")
-        }
+       const modal = document.getElementById('modal');
+       const modalContent = document.getElementById('modal-content');
 
-    }
+       if (event.target === modalContent) {
+           event.stopPropagation();
+           return;
+       }
 
-    const getOrderList = async (status = "") => {
+       if (event.target === modal) {
+           modal.remove();
+       }
 
-        const response = await getResponse(`/api/orders?status=${status}`)
+   }
 
-        const data = await response.json();
+   const buttonModalClose = () => {
+       const modal = document.getElementById('modal');
+       modal.remove();
+   }
 
-        if (response.status === 200) {
-            console.log(data)
-            console.log(data.length)
-            const ordersDiv = document.getElementById('orders');
-            if (data.length === 0) {
-                ordersDiv.innerHTML = `<div class="orderItem">주문 내역이 존재하지 않습니다.</div>`
-            } else {
-                let html = "";
-
-                data.forEach(order => {
-                    html +=
-                        `
-                        <div class="orderItem">
-                            <input type="hidden" value="${order.orderId}">
-                            <div class="orderIndex"><span>${order.index}</span></div>
-                            <div class="orderProductName">
-                                <a  href='/admin/orders/detail/${order.orderId}' >
-                                   `
-                    order.orderItemDTOS.forEach(orderItem => {
-                        html +=
-                            `
-                                    <span>
-                                        <span>${orderItem.productName}</span>
-                                        <span>${orderItem.option}</span>
-                                    </span>
-                                `
-                    })
-                    html +=
-                        `
-                         </a>
-                            </div>
-                            <div class="orderTotal"><span >${order.totalPrice}</span></div>
-                            <div class="orderStatus"><span id="orderStatus">${order.status}</span></div>
-                            <div class="orderDate"><span >${order.createdAt}</span></div>
-                            <div class="orderAction">
-                             `
-                    if (order.itemPending) {
-                        html += `<button onclick="orderStatusChange(this,'OK')">주문확인</button>`
-                    }
-                    if (order.adminCheck) {
-                        html += `<button onclick="orderStatusChange(this,'CANCEL')">주문취소</button>`
-                    }
-                    html +=
-                        `
-                        </div>
-                        </div>
-                        `
-                })
-
-                ordersDiv.innerHTML = html;
-            }
-
-        } else {
-            alert("잘못된 요청입니다.")
-        }
-
-    }
-
-    // 문의 내역
-    const inquiryManage = () => {
-        window.location.href = '/admin/inquiries'
-    }
-
-    const historyBack = () => {
-        history.back();
-    }
-
-    const inquiryAnswerSave = async () => {
-
-        const inquiryId = document.getElementById('inquiry').querySelector('input[type="hidden"]').value;
-        const adminContent = document.querySelector('textarea').value;
-
-        const item = {
-            inquiryId,
-            adminContent
-        }
-
-        const response = await postJsonResponse('/api/inquiries/save', JSON.stringify(item));
-
-        if (response.status === 200) {
-            alert('저장완료')
-            window.location.href;
-        } else {
-            alert('저장실패')
-        }
-
-    }
-
-    const inquiryAnswerModifyForm = () => {
-        const inquiryId = document.getElementById('inquiry').querySelector('input[type="hidden"]').value;
-        window.location.href = `/admin/inquiries/modifyform/${inquiryId}`
-    }
-
-    const inquiryAnswerModify = async () => {
-        const inquiryAnswerId = document.getElementById('inquiryAnswer').querySelector('input[type="hidden"]').value;
-        const adminContent = document.querySelector('textarea').value;
-
-        const item = {
-            inquiryAnswerId,
-            adminContent
-        }
-
-        const response = await postJsonResponse('/api/inquiries/modify', JSON.stringify(item));
-
-        if (response.status === 200) {
-            const data = await response.text();
-            console.log(data);
-            alert('변경완료')
-            window.location.href = `/admin/inquiries/detail/${inquiryAnswerId}`
-        } else {
-            alert('잘못된요청입니다.')
-        }
-
-    }
-
-    const inquiryList = () => {
-        window.location.href = `/admin/inquiries`
-    }
-
-    const noAnswerInquiryList = () => {
-        window.location.href = `/admin/inquiries/noanswer`
-    }
 
 
 </script>
