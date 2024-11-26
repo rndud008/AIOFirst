@@ -38,7 +38,7 @@
                 <div class="orderStatus"><span id="orderStatus" th:text="${order.status}">주문상태</span></div>
                 <div class="orderDate"><span th:text="${order.createdAt}">주문일</span></div>
                 <div class="orderAction">
-                    <button th:if="${order.itemPending}" onclick="orderStatusChange(this,'PREPARING_ITEM')">주문확인</button>
+                    <button th:if="${order.itemPending}" onclick="orderStatusChange(this,'PREPARING_ITEM_CHECK')">주문확인</button>
                     <button th:if="${order.adminCheck}" onclick="orderStatusChangeModal(this)">주문상태변경</button>
                 </div>
             </div>

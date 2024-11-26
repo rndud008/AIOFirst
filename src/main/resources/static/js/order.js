@@ -4,7 +4,12 @@ const orderManage = () => {
 
 const orderStatusChange = async (button, status = "") => {
 
-    const div = button.closest('div').parentNode;
+    let div = button.closest('div').parentNode;
+    const modal = document.getElementById('modal');
+
+    if (modal !== null){
+        div = modal.parentNode;
+    }
 
     const orderId = div.querySelector("input[type='hidden']").value;
 
@@ -21,20 +26,16 @@ const orderStatusChange = async (button, status = "") => {
         orderId,
         status
     }
-    console.log(item)
 
-    // const response = await postJsonResponse(`/api/orders/status`, JSON.stringify(item))
-    //
-    // const data = await response.text();
-    //
-    // if (response.status === 200) {
-    //
-    //     div.querySelector('#orderStatus').textContent = data
-    //     button.remove()
-    //     alert("변경완료")
-    // } else {
-    //     alert("잘못된요청입니다.")
-    // }
+    const response = await postJsonResponse(`/api/orders/status`, JSON.stringify(item))
+
+
+    if (response.status === 200) {
+        window.location.href = window.location.href
+        alert("변경완료")
+    } else {
+        alert("잘못된요청입니다.")
+    }
 
 }
 

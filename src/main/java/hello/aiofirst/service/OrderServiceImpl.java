@@ -157,12 +157,8 @@ public class OrderServiceImpl implements OrderService {
     public Order orderStatusChange(OrderRequestDTO orderRequestDTO) {
         Order order = orderRepository.findById(orderRequestDTO.getOrderId()).orElse(new Order());
 
-        if (OrderStatus.PREPARING_ITEM.equals(OrderStatus.valueOf(orderRequestDTO.getStatus()))) {
-            order.changeStatus(OrderStatus.valueOf(orderRequestDTO.getStatus()));
-        } else {
-            order.changeStatus(OrderStatus.valueOf(orderRequestDTO.getStatus()));
-            order.changeAdmin(false);
-        }
+        order.changeStatus(OrderStatus.valueOf(orderRequestDTO.getStatus()));
+        order.changeAdmin(false);
 
         return order;
     }
